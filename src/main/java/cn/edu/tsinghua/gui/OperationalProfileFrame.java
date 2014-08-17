@@ -10,9 +10,10 @@ import java.awt.event.ActionListener;
 public class OperationalProfileFrame extends JFrame{
     private JButton clickMeButton;
     private JPanel rootPanel;
+    private JMenuBar menuBar;
 
     public OperationalProfileFrame(){
-        super("Test GUI");
+        super("构造操作剖面");
         setContentPane(rootPanel);
         pack();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -24,7 +25,17 @@ public class OperationalProfileFrame extends JFrame{
             }
         });
 
+        JMenu[] menus = {
+                new JMenu("文件"),
+                new JMenu("编辑"),
+                new JMenu("帮助"),
+        };
+        menuBar = new JMenuBar();
+        for(JMenu jMenu : menus){
+            menuBar.add(jMenu);
+        }
+        setJMenuBar(menuBar);
         setVisible(true);
-        setSize(400,300);
+        setSize(800,600);
     }
 }
