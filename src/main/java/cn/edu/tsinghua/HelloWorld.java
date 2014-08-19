@@ -1,7 +1,5 @@
 package cn.edu.tsinghua;
 
-import cn.edu.tsinghua.gui.OperationalProfileFrame;
-
 /**
  * Hello world!
  *
