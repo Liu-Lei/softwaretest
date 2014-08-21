@@ -36,6 +36,7 @@ public class OPMainFrame extends JFrame{
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
                 OPCustomerFrame opCustomerFrame = new OPCustomerFrame();
                 OPMainFrame.this.dispose();
             }
