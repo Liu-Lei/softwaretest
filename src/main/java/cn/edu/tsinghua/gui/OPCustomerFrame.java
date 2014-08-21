@@ -40,6 +40,14 @@ public class OPCustomerFrame extends JFrame{
         previousButton.setBounds((getWidth()-buttonWidth)/2-buttonWidth,(getHeight()-buttonHeight-getHeight()/5)/2,buttonWidth,buttonHeight);
         nextButton.setBounds((getWidth()-buttonWidth)/2+buttonWidth,(getHeight()-buttonHeight-getHeight()/5)/2,buttonWidth,buttonHeight);
         add(BorderLayout.CENTER,rootPanel);
+
+        previousButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFrame frame = new OPMainFrame();
+                OPCustomerFrame.this.dispose();
+            }
+        });
     }
 
     public static void main( String[] args ){
