@@ -9,6 +9,9 @@ public class OPConstant {
     public static final String FILE_CN_NAME = "文件";
     public static final String HELP_CN_NAME = "帮助";
 
+    public static final String NEXT = "下一步";
+    public static final String PREVIOUS = "上一步";
+
 
     public static final int FRAME_WIDTH = 800;
     public static final int FRAME_HEIGHT = 600;

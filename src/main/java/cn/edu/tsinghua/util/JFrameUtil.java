@@ -14,5 +14,6 @@ public class JFrameUtil {
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setSize(width,height);
         frame.setVisible(true);
+        frame.setResizable(false);
     }
 }
