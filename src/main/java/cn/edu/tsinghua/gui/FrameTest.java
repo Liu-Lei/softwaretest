@@ -1,9 +1,10 @@
 package cn.edu.tsinghua.gui;
 
 import cn.edu.tsinghua.util.JFrameUtil;
-import sun.font.GlyphLayout;
 
 import javax.swing.*;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,7 +13,7 @@ import java.awt.event.ActionListener;
  * Hello world!
  *
  */
-public class OPMainFrame extends JFrame{
+public class FrameTest extends JFrame{
     private JButton startButton = new JButton(OPConstant.START_CREATE_OP);
     private JPanel rootPanel = new JPanel();
     private JMenuBar menuBar = new OPJMenuBar();
@@ -21,7 +22,7 @@ public class OPMainFrame extends JFrame{
     private int buttonHeight = 50;
 
     //构造首个界面
-    public OPMainFrame(){
+    public FrameTest(){
         super(OPConstant.OP_CN_NAME);
         //设置界面在屏幕中居中显示
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -31,16 +32,28 @@ public class OPMainFrame extends JFrame{
 
         setJMenuBar(menuBar);
         setResizable(false);
+
+        TableModel dataModel = new AbstractTableModel() {
+            public int getColumnCount() { return 3; }
+            public int getRowCount() { return 3;}
+            public Object getValueAt(int row, int col) { return new Integer(row*col); }
+        };
+        JTable table = new JTable(dataModel);
+        JScrollPane scrollpane = new JScrollPane(table);
+
+
         rootPanel.setLayout(null);
-        rootPanel.add(startButton);
+        //rootPanel.add(startButton);
+        rootPanel.add(scrollpane);
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 OPCustomerFrame opCustomerFrame = new OPCustomerFrame();
-                OPMainFrame.this.dispose();
+                FrameTest.this.dispose();
             }
         });
         startButton.setBounds((getWidth()-buttonWidth)/2,(getHeight()-buttonHeight-getHeight()/5)/2,buttonWidth,buttonHeight);
+        scrollpane.setBounds((getWidth()-buttonWidth)/4,(getHeight()-buttonHeight-getHeight()/2),buttonWidth*2,buttonHeight*2);
         add(BorderLayout.CENTER,rootPanel);
     }
 
@@ -57,6 +70,6 @@ public class OPMainFrame extends JFrame{
         } catch (UnsupportedLookAndFeelException e) {
             e.printStackTrace();
         }
-        OPMainFrame mainFrame = new OPMainFrame();
+        FrameTest mainFrame = new FrameTest();
     }
 }

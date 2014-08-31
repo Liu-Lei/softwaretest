@@ -11,6 +11,7 @@ public class OPConstant {
 
     public static final String NEXT = "下一步";
     public static final String PREVIOUS = "上一步";
+    public static final String ADD_CN = "增加";
 
 
     public static final int FRAME_WIDTH = 800;
