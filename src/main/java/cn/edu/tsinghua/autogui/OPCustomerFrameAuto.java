@@ -9,7 +9,7 @@ public class OPCustomerFrameAuto extends JFrame{
 
 
     private JPanel panel1;
-    private JList list1;
+    private JTable table1;
 
 
     public static void main(String[] args) {
@@ -18,5 +18,9 @@ public class OPCustomerFrameAuto extends JFrame{
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
+    }
+
+    private void createUIComponents() {
+        // TODO: place custom component creation code here
     }
 }
