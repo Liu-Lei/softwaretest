@@ -5,5 +5,9 @@ package cn.edu.tsinghua.util;
  */
 public class Constant {
     public final static String OBJECT_SERIALIZATION_STORAGE_PATH = "storage/";
+    
+    
+    public final static String NEW_LINE_STRING = "\n";
+    public final static String TAB__STRING = "\t";
 
 }

@@ -15,4 +15,15 @@ public class JFrameUtil {
         frame.setSize(width,height);
         frame.setVisible(true);
     }
+    
+    /**
+     * 刷新 名称+概率TextArea
+     * @param name
+     * @param possibility 
+     */
+    public static void refreshTheTextArea(JTextArea textArea,StringBuffer displayText, String name, String possibility){
+        displayText.append(name).append(Constant.TAB__STRING).append(possibility).append(Constant.NEW_LINE_STRING);
+        textArea.setText(null);
+        textArea.setText(displayText.toString());
+    }
 }
