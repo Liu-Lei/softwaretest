@@ -40,6 +40,8 @@ public class OPMainUI extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(800, 600));
+        setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Opertaional Profile"));
@@ -53,7 +55,7 @@ public class OPMainUI extends javax.swing.JFrame {
                 jButton4ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 220, -1, 40));
+        jPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 220, -1, 40));
 
         projectNameText.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -75,6 +77,10 @@ public class OPMainUI extends javax.swing.JFrame {
         projectName = projectNameText.getText();
         if(projectName.trim().isEmpty()){
             JOptionPane.showMessageDialog(this, "请输入要创建的操作剖面项目名称。");
+        }else{
+            this.dispose();
+            OPCustomerUI oPCustomerUI = new OPCustomerUI(projectName);
+            oPCustomerUI.setVisible(true);
         }
     }//GEN-LAST:event_jButton4ActionPerformed
 
