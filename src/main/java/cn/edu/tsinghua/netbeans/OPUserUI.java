@@ -10,7 +10,9 @@ import cn.edu.tsinghua.testcase.model.UserProfile;
 import cn.edu.tsinghua.util.Constant;
 import cn.edu.tsinghua.util.JFrameUtil;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -21,11 +23,11 @@ import javax.swing.UnsupportedLookAndFeelException;
  */
 public class OPUserUI extends javax.swing.JFrame {
     
-    private StringBuffer customerString = new StringBuffer();
+    private Map<String, StringBuffer> customerStringMap;
     
     private String projectName;
     
-    private List<UserProfile> userProfileList;
+    private Map<OperationObject,UserProfile> userProfileMap;
     private List<OperationObject> customerProfileList;
     
     
@@ -42,15 +44,24 @@ public class OPUserUI extends javax.swing.JFrame {
         
         //设置客户剖面列表和用户剖面列表
         this.customerProfileList = customerProfileList;
-        userProfileList = new ArrayList<UserProfile>();
+        userProfileMap = new HashMap<OperationObject, UserProfile>();
+        
+        //init the customer string buffer map
+        customerStringMap = new HashMap<String, StringBuffer>();
+        
         for(OperationObject customerObject : customerProfileList){
             jComboBox1.addItem(customerObject);
             UserProfile userProfile = new UserProfile();
             userProfile.setCustomerObject(customerObject);
-            userProfileList.add(userProfile);
+            userProfileMap.put(customerObject, userProfile);
+            customerStringMap.put(customerObject.getName(), new StringBuffer());
         }
-        //jComboBox1.repaint();
-        JFrameUtil.refreshTheTextArea(jTextArea1, customerString, "用户名称", "概率");
+        
+        //init the customer string buffer map
+        for(String customerName : customerStringMap.keySet()){
+            JFrameUtil.refreshTheTextArea(jTextArea1, customerStringMap.get(customerName), "用户名称", "概率");
+        }
+        
     }
 
     /**
@@ -122,6 +133,11 @@ public class OPUserUI extends javax.swing.JFrame {
 
         jComboBox1.setFont(new java.awt.Font("宋体", 0, 14)); // NOI18N
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "请选择" }));
+        jComboBox1.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboBox1ItemStateChanged(evt);
+            }
+        });
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox1ActionPerformed(evt);
@@ -186,16 +202,24 @@ public class OPUserUI extends javax.swing.JFrame {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         String userName = JOptionPane.showInputDialog(this,"请输入用户名称（不同客户的同一类别用户需用同一个用户名）");
         String userPro = JOptionPane.showInputDialog(this,"请输入用户使用概率");
-        
+        //判断用户名概率是否为空
+        //TODO:判断概率是否为浮点类型
         if(userName.trim().isEmpty() || userPro.trim().isEmpty()){
             JOptionPane.showMessageDialog(this, "用户名称或者概率不能为空。");
         }else{
-            JFrameUtil.refreshTheTextArea(jTextArea1, customerString, userName, userPro);
-            
             OperationObject customerObject = (OperationObject) jComboBox1.getSelectedItem();
+            
+            JFrameUtil.refreshTheTextArea(jTextArea1, customerStringMap.get(customerObject.getName()), userName, userPro);
             
             OperationObject userObject = new OperationObject(userName, Float.parseFloat(userPro));
             
+            UserProfile userProfile = userProfileMap.get(customerObject);
+            
+            List<OperationObject> userObjectList = userProfile.getUserObjectList();
+            if(userObjectList == null){
+                userObjectList = new ArrayList<OperationObject>();
+            }
+            userObjectList.add(userObject);
         }
     }//GEN-LAST:event_jButton4ActionPerformed
 
@@ -207,8 +231,12 @@ public class OPUserUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        // TODO add your handling code here:
+        System.out.println("Combo Box Action Performed");
     }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private void jComboBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox1ItemStateChanged
+        System.out.println("Item State Changed");
+    }//GEN-LAST:event_jComboBox1ItemStateChanged
 
     
     /**

@@ -7,7 +7,7 @@ import java.util.List;
  */
 public class UserProfile {
     private OperationObject customerObject;
-    private List<OperationObject> userProfileList;
+    private List<OperationObject> userObjectList;
 
     public OperationObject getCustomerObject() {
         return customerObject;
@@ -17,12 +17,12 @@ public class UserProfile {
         this.customerObject = customerObject;
     }
 
-    public List<OperationObject> getUserProfileList() {
-        return userProfileList;
+    public List<OperationObject> getUserObjectList() {
+        return userObjectList;
     }
 
-    public void setUserProfileList(List<OperationObject> userProfileList) {
-        this.userProfileList = userProfileList;
+    public void setUserObjectList(List<OperationObject> userObjectList) {
+        this.userObjectList = userObjectList;
     }
     
 }
