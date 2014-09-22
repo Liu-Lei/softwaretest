@@ -7,7 +7,6 @@ package cn.edu.tsinghua.netbeans;
 
 import cn.edu.tsinghua.testcase.model.OperationObject;
 import cn.edu.tsinghua.testcase.model.UserProfile;
-import cn.edu.tsinghua.util.Constant;
 import cn.edu.tsinghua.util.JFrameUtil;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,7 +22,7 @@ import javax.swing.UnsupportedLookAndFeelException;
  */
 public class OPUserUI extends javax.swing.JFrame {
     
-    private Map<String, StringBuffer> customerStringMap;
+    private Map<String, StringBuffer> userStringMap;
     
     private String projectName;
     
@@ -47,19 +46,19 @@ public class OPUserUI extends javax.swing.JFrame {
         userProfileMap = new HashMap<OperationObject, UserProfile>();
         
         //init the customer string buffer map
-        customerStringMap = new HashMap<String, StringBuffer>();
+        userStringMap = new HashMap<String, StringBuffer>();
         
         for(OperationObject customerObject : customerProfileList){
             jComboBox1.addItem(customerObject);
             UserProfile userProfile = new UserProfile();
             userProfile.setCustomerObject(customerObject);
             userProfileMap.put(customerObject, userProfile);
-            customerStringMap.put(customerObject.getName(), new StringBuffer());
+            userStringMap.put(customerObject.getName(), new StringBuffer());
         }
         
         //init the customer string buffer map
-        for(String customerName : customerStringMap.keySet()){
-            JFrameUtil.refreshTheTextArea(jTextArea1, customerStringMap.get(customerName), "用户名称", "概率");
+        for(String customerName : userStringMap.keySet()){
+            JFrameUtil.refreshTheTextArea(jTextArea1, userStringMap.get(customerName), "用户名称", "概率");
         }
         
     }
@@ -155,20 +154,21 @@ public class OPUserUI extends javax.swing.JFrame {
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel3))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton6)
-                        .addGap(283, 283, 283)
-                        .addComponent(jButton7))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton4))
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(63, Short.MAX_VALUE))
+                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(57, 57, 57)
+                            .addComponent(jButton4))
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(jButton6)
+                            .addGap(283, 283, 283)
+                            .addComponent(jButton7))))
+                .addContainerGap(67, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -177,7 +177,7 @@ public class OPUserUI extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jLabel3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -200,27 +200,33 @@ public class OPUserUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        String userName = JOptionPane.showInputDialog(this,"请输入用户名称（不同客户的同一类别用户需用同一个用户名）");
-        String userPro = JOptionPane.showInputDialog(this,"请输入用户使用概率");
-        //判断用户名概率是否为空
-        //TODO:判断概率是否为浮点类型
-        if(userName.trim().isEmpty() || userPro.trim().isEmpty()){
-            JOptionPane.showMessageDialog(this, "用户名称或者概率不能为空。");
-        }else{
-            OperationObject customerObject = (OperationObject) jComboBox1.getSelectedItem();
-            
-            JFrameUtil.refreshTheTextArea(jTextArea1, customerStringMap.get(customerObject.getName()), userName, userPro);
-            
-            OperationObject userObject = new OperationObject(userName, Float.parseFloat(userPro));
-            
-            UserProfile userProfile = userProfileMap.get(customerObject);
-            
-            List<OperationObject> userObjectList = userProfile.getUserObjectList();
-            if(userObjectList == null){
-                userObjectList = new ArrayList<OperationObject>();
+        Object selectedObject = jComboBox1.getSelectedItem();
+        if(selectedObject instanceof OperationObject){
+            String userName = JOptionPane.showInputDialog(this,"请输入用户名称（不同客户的同一类别用户需用同一个用户名）");
+            String userPro = JOptionPane.showInputDialog(this,"请输入用户使用概率");
+            //判断用户名概率是否为空
+            //TODO:判断概率是否为浮点类型
+            if(userName.trim().isEmpty() || userPro.trim().isEmpty()){
+                JOptionPane.showMessageDialog(this, "用户名称或者概率不能为空。");
+            }else{
+                OperationObject customerObject = (OperationObject)selectedObject;
+
+                JFrameUtil.refreshTheTextArea(jTextArea1, userStringMap.get(customerObject.getName()), userName, userPro);
+
+                OperationObject userObject = new OperationObject(userName, Float.parseFloat(userPro));
+
+                UserProfile userProfile = userProfileMap.get(customerObject);
+
+                List<OperationObject> userObjectList = userProfile.getUserObjectList();
+                if(userObjectList == null){
+                    userObjectList = new ArrayList<OperationObject>();
+                }
+                userObjectList.add(userObject);
             }
-            userObjectList.add(userObject);
+        }else{
+            JOptionPane.showMessageDialog(this, "请先选择选择客户操作剖面");
         }
+        
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
@@ -231,12 +237,17 @@ public class OPUserUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        OperationObject customerObject = (OperationObject) jComboBox1.getSelectedItem();
-        JFrameUtil.refreshTheTextArea(jTextArea1, customerStringMap.get(customerObject.getName()));
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void jComboBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox1ItemStateChanged
-        System.out.println("Item State Changed");
+        Object selectedObject = jComboBox1.getSelectedItem();
+        if(selectedObject instanceof OperationObject){
+            OperationObject customerObject = (OperationObject) selectedObject;
+            JFrameUtil.refreshTheTextArea(jTextArea1, userStringMap.get(customerObject.getName()));
+        }else{
+            JFrameUtil.refreshTheTextArea(jTextArea1, new StringBuffer(), "用户名称", "概率");
+        }
+        
     }//GEN-LAST:event_jComboBox1ItemStateChanged
 
     
@@ -279,9 +290,12 @@ public class OPUserUI extends javax.swing.JFrame {
             e.printStackTrace();
         } 
         /* Create and display the form */
+        final List<OperationObject> customerProfileList = new ArrayList<OperationObject>();
+        customerProfileList.add(new OperationObject("北京地铁公司", 0.5f));
+        customerProfileList.add(new OperationObject("杭州地铁公司", 0.5f));
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-            //    new OPUserUI("").setVisible(true);
+                new OPUserUI("TEST",customerProfileList).setVisible(true);
             }
         });
     }
