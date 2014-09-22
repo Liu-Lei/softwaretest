@@ -89,7 +89,7 @@ public class OPUserUI extends javax.swing.JFrame {
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Customer Profile"));
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("User Profile"));
         jPanel1.setName(""); // NOI18N
 
         jButton4.setFont(new java.awt.Font("宋体", 0, 14)); // NOI18N
@@ -231,7 +231,8 @@ public class OPUserUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        System.out.println("Combo Box Action Performed");
+        OperationObject customerObject = (OperationObject) jComboBox1.getSelectedItem();
+        JFrameUtil.refreshTheTextArea(jTextArea1, customerStringMap.get(customerObject.getName()));
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void jComboBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox1ItemStateChanged

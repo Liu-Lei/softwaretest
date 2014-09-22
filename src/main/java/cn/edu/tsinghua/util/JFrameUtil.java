@@ -26,4 +26,13 @@ public class JFrameUtil {
         textArea.setText(null);
         textArea.setText(displayText.toString());
     }
+    
+    /**
+     * 刷新 名称+概率TextArea
+     * @param name
+     * @param possibility 
+     */
+    public static void refreshTheTextArea(JTextArea textArea,StringBuffer displayText){
+        textArea.setText(displayText.toString());
+    }
 }
