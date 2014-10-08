@@ -161,6 +161,9 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel2">
           <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="&#x5b8b;&#x4f53;" size="12" style="1"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="&#x9879;&#x76ee;&#x540d;&#x79f0;&#xff1a;"/>
           </Properties>
         </Component>

@@ -98,6 +98,7 @@ public class OPCustomerUI extends javax.swing.JFrame {
             }
         });
 
+        jLabel2.setFont(new java.awt.Font("宋体", 1, 12)); // NOI18N
         jLabel2.setText("项目名称：");
 
         jLabel3.setFont(new java.awt.Font("宋体", 1, 12)); // NOI18N
@@ -156,16 +157,26 @@ public class OPCustomerUI extends javax.swing.JFrame {
         String customerName = JOptionPane.showInputDialog(this,"请输入客户名称");
         String customerPro = JOptionPane.showInputDialog(this,"请输入客户使用概率");
         
-        if(customerName.trim().isEmpty() || customerPro.trim().isEmpty()){
-            JOptionPane.showMessageDialog(this, "客户名称或者概率不能为空。");
+        Float proFloat = 0f;
+        try{
+            proFloat = Float.parseFloat(customerPro);
+        }catch(NumberFormatException ex){
+            JOptionPane.showMessageDialog(this, "使用概率必须为字符型数字。");
+            return;
+        }
+        
+        if(customerName.trim().isEmpty() || proFloat <= 0 || proFloat > 1){
+            JOptionPane.showMessageDialog(this, "客户名称或者概率不能为空，并且使用概率不能大于1。");
         }else{
             JFrameUtil.refreshTheTextArea(jTextArea1, customerString, customerName, customerPro);
-            OperationObject customerObject = new OperationObject(customerName,Float.parseFloat(customerPro));
+            OperationObject customerObject = new OperationObject(customerName,proFloat);
             customerProfile.add(customerObject);
         }
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        this.dispose();
+        new OPMainUI().setVisible(true);
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed

@@ -25,6 +25,13 @@ public class OPMainUI extends javax.swing.JFrame {
         this.setResizable(false);
     }
 
+    public OPMainUI(String projectName) {
+        initComponents();
+        this.setResizable(false);
+        this.projectName = projectName;
+        projectNameText.setText(projectName);
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -68,7 +75,7 @@ public class OPMainUI extends javax.swing.JFrame {
         jLabel1.setText("请输入要创建的操作剖面项目名称：");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 90, 280, 40));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 30, 600, 410));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 20, 600, 410));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
