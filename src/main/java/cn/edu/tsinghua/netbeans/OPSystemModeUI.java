@@ -32,7 +32,7 @@ public class OPSystemModeUI extends javax.swing.JFrame {
     
     private String projectName;
     //key->father op name, value->sun op list
-    private Map<OperationObject,List<OperationObject>> systemModeProfileMap;
+    private Map<OperationObject, List<OperationObject>> systemModeProfileMap;
     
     private Map<String, Float> userProfileMap;
    
@@ -50,8 +50,8 @@ public class OPSystemModeUI extends javax.swing.JFrame {
         
         //初始化下拉框，stringMap和操作剖面Map
         for(String keyString : userProfileMap.keySet()){
-            jComboBox1.addItem(keyString);
             OperationObject operationObject = new OperationObject(keyString, userProfileMap.get(keyString));
+            jComboBox1.addItem(operationObject);
             systemModeProfileMap.put(operationObject, new ArrayList<OperationObject>());
             stringMap.put(keyString, new StringBuffer());
         }
@@ -211,8 +211,9 @@ public class OPSystemModeUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        String selectedItem = jComboBox1.getSelectedItem().toString();
-        if(!selectedItem.equals(Constant.PLEASE_CHOOSE)){
+        Object selectedItem = jComboBox1.getSelectedItem();
+        if(selectedItem instanceof OperationObject){
+            OperationObject fatherOperationObject = (OperationObject) selectedItem;
             String nameString = JOptionPane.showInputDialog(this,"请输入"+profileCNName);
             String possibilityString = JOptionPane.showInputDialog(this,"请输入"+profileCNShortName+"使用概率");
             
@@ -229,11 +230,10 @@ public class OPSystemModeUI extends javax.swing.JFrame {
             if(nameString.trim().isEmpty() || proFloat <= 0 || proFloat > 1){
                 JOptionPane.showMessageDialog(this, profileCNName+"或者概率不能为空，并且使用概率不能大于1。");             
             }else{
-                JFrameUtil.refreshTheTextArea(jTextArea1, stringMap.get(selectedItem), nameString, possibilityString);
+                JFrameUtil.refreshTheTextArea(jTextArea1, stringMap.get(fatherOperationObject.getName()), nameString, possibilityString);
 
                 OperationObject operationObject = new OperationObject(nameString, proFloat);
-                OperationObject userOP = new OperationObject(selectedItem, userProfileMap.get(selectedItem));
-                List<OperationObject> OperationObjectList = systemModeProfileMap.get(userOP);
+                List<OperationObject> OperationObjectList = systemModeProfileMap.get(fatherOperationObject);
                 OperationObjectList.add(operationObject);
             }
         }else{

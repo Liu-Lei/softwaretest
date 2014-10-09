@@ -21,20 +21,20 @@ import javax.swing.UnsupportedLookAndFeelException;
  *
  * @author liulei
  */
-public class OPFunctionalUI extends javax.swing.JFrame {
+public class OperationalProfileUI extends javax.swing.JFrame {
     
-    private String profileCNShortName = "功能";
+    private String profileCNShortName = "操作";
     
-    private String profileCNName = "功能名称";
+    private String profileCNName = "操作名称";
     
     private Map<String, StringBuffer> stringMap;
     
     private String projectName;
     //key->father op name, value->sun op list
-    private Map<OperationObject, List<OperationObject>> functionProfileMap;
+    private Map<OperationObject, List<OperationObject>> operationalProfileMap;
    
 
-    OPFunctionalUI(String projectName, Map<String, Float> profileMap) {
+    OperationalProfileUI(String projectName, Map<String, Float> profileMap) {
         initComponents();
         this.projectName = projectName;
         //设置项目名称
@@ -43,13 +43,13 @@ public class OPFunctionalUI extends javax.swing.JFrame {
         this.setVisible(true);
         
         stringMap = new HashMap<String, StringBuffer>();
-        functionProfileMap = new HashMap<OperationObject, List<OperationObject>>();
+        operationalProfileMap = new HashMap<OperationObject, List<OperationObject>>();
         
         //初始化下拉框，stringMap和操作剖面Map
         for(String keyString : profileMap.keySet()){
             OperationObject operationObject = new OperationObject(keyString, profileMap.get(keyString));
             jComboBox1.addItem(operationObject);
-            functionProfileMap.put(operationObject, new ArrayList<OperationObject>());
+            operationalProfileMap.put(operationObject, new ArrayList<OperationObject>());
             stringMap.put(keyString, new StringBuffer());
         }
         
@@ -81,11 +81,12 @@ public class OPFunctionalUI extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(800, 600));
         setPreferredSize(new java.awt.Dimension(800, 600));
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Functional Profile"));
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Operational Profile"));
         jPanel1.setName(""); // NOI18N
 
         jButton4.setFont(new java.awt.Font("宋体", 0, 14)); // NOI18N
@@ -123,7 +124,7 @@ public class OPFunctionalUI extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("宋体", 1, 12)); // NOI18N
 
         jLabel4.setFont(new java.awt.Font("宋体", 0, 14)); // NOI18N
-        jLabel4.setText("请选择系统模式：");
+        jLabel4.setText("请选择功能：");
         jLabel4.setToolTipText("");
 
         jComboBox1.setFont(new java.awt.Font("宋体", 0, 14)); // NOI18N
@@ -140,7 +141,7 @@ public class OPFunctionalUI extends javax.swing.JFrame {
         });
 
         jLabel5.setFont(new java.awt.Font("宋体", 0, 14)); // NOI18N
-        jLabel5.setText("请添加项目的功能名称和概率：");
+        jLabel5.setText("请添加功能对应的操作名称和概率：");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -160,12 +161,9 @@ public class OPFunctionalUI extends javax.swing.JFrame {
                         .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(jButton6)
-                                .addGap(270, 270, 270))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(55, 55, 55)))
+                            .addComponent(jButton6)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(30, 30, 30)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
@@ -178,20 +176,21 @@ public class OPFunctionalUI extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jLabel3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(56, 56, 56)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(2, 2, 2)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
-                    .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
+                            .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -223,11 +222,11 @@ public class OPFunctionalUI extends javax.swing.JFrame {
                 JFrameUtil.refreshTheTextArea(jTextArea1, stringMap.get(fatherOperationObject.getName()), nameString, possibilityString);
 
                 OperationObject operationObject = new OperationObject(nameString, proFloat);
-                List<OperationObject> OperationObjectList = functionProfileMap.get(fatherOperationObject);
+                List<OperationObject> OperationObjectList = operationalProfileMap.get(fatherOperationObject);
                 OperationObjectList.add(operationObject);
             }
         }else{
-            JOptionPane.showMessageDialog(this, "请先选择系统模式操作剖面");
+            JOptionPane.showMessageDialog(this, "请先选择功能操作剖面");
         }
         
     }//GEN-LAST:event_jButton4ActionPerformed
@@ -271,13 +270,13 @@ public class OPFunctionalUI extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(OPFunctionalUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(OperationalProfileUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(OPFunctionalUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(OperationalProfileUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(OPFunctionalUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(OperationalProfileUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(OPFunctionalUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(OperationalProfileUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
          //设置控件格式适应当前系统
@@ -294,11 +293,11 @@ public class OPFunctionalUI extends javax.swing.JFrame {
         } 
         /* Create and display the form */
         final Map<String, Float> opMap = new HashMap<String, Float>();
-        opMap.put("User use mode", 0.9f);
-        opMap.put("Attendants use mode", 0.1f);
+        opMap.put("Add new User", 0.9f);
+        opMap.put("Remove User", 0.1f);
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new OPFunctionalUI("TEST",opMap).setVisible(true);
+                new OperationalProfileUI("TEST",opMap).setVisible(true);
             }
         });
     }
