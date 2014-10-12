@@ -5,10 +5,13 @@
  */
 package cn.edu.tsinghua.netbeans;
 
+import cn.edu.tsinghua.gui.OPConstant;
 import cn.edu.tsinghua.testcase.model.OperationObject;
 import cn.edu.tsinghua.testcase.model.UserProfile;
 import cn.edu.tsinghua.util.JFrameUtil;
 import cn.edu.tsinghua.util.OPUtil;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,6 +40,8 @@ public class OPUserUI extends javax.swing.JFrame {
      */
     public OPUserUI(String projectName, List<OperationObject> customerProfileList) {
         initComponents();
+        //设置界面在屏幕中居中显示
+        JFrameUtil.setFrameLocationToMiddle(this);
         this.projectName = projectName;
         //设置项目名称
         jLabel3.setText(projectName);

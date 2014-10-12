@@ -33,6 +33,7 @@ public class OPCustomerUI extends javax.swing.JFrame {
      */
     public OPCustomerUI(String projectName) {
         initComponents();
+        JFrameUtil.setFrameLocationToMiddle(this);
         this.projectName = projectName;
         jLabel3.setText(projectName);
         this.setResizable(false);

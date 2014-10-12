@@ -9,6 +9,7 @@ import cn.edu.tsinghua.testcase.model.OperationObject;
 import cn.edu.tsinghua.testcase.model.UserProfile;
 import cn.edu.tsinghua.util.Constant;
 import cn.edu.tsinghua.util.JFrameUtil;
+import cn.edu.tsinghua.util.OPUtil;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -36,6 +37,7 @@ public class OPFunctionalUI extends javax.swing.JFrame {
 
     OPFunctionalUI(String projectName, Map<String, Float> profileMap) {
         initComponents();
+        JFrameUtil.setFrameLocationToMiddle(this);
         this.projectName = projectName;
         //设置项目名称
         jLabel3.setText(projectName);
@@ -237,7 +239,7 @@ public class OPFunctionalUI extends javax.swing.JFrame {
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         this.dispose();
-    //    new OPSystemModeUI(projectName, userProfileMap);
+        new OperationalProfileUI(projectName, OPUtil.getOverallOperationList(functionProfileMap));
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed

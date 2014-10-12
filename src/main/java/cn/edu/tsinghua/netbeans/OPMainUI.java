@@ -5,6 +5,10 @@
  */
 package cn.edu.tsinghua.netbeans;
 
+import cn.edu.tsinghua.gui.OPConstant;
+import cn.edu.tsinghua.util.JFrameUtil;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -22,11 +26,15 @@ public class OPMainUI extends javax.swing.JFrame {
      */
     public OPMainUI() {
         initComponents();
+        //设置界面在屏幕中居中显示
+        JFrameUtil.setFrameLocationToMiddle(this);
         this.setResizable(false);
     }
 
     public OPMainUI(String projectName) {
         initComponents();
+        //设置界面在屏幕中居中显示
+        JFrameUtil.setFrameLocationToMiddle(this);
         this.setResizable(false);
         this.projectName = projectName;
         projectNameText.setText(projectName);

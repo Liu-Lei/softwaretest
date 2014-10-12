@@ -39,6 +39,7 @@ public class OPSystemModeUI extends javax.swing.JFrame {
 
     OPSystemModeUI(String projectName, Map<String, Float> userProfileMap) {
         initComponents();
+        JFrameUtil.setFrameLocationToMiddle(this);
         this.projectName = projectName;
         this.userProfileMap = userProfileMap;
         //设置项目名称
