@@ -5,14 +5,18 @@
  */
 package cn.edu.tsinghua.netbeans;
 
+import cn.edu.tsinghua.testcase.model.OperateParameter;
 import cn.edu.tsinghua.testcase.model.OperationObject;
+import cn.edu.tsinghua.testcase.model.ParameterType;
 import cn.edu.tsinghua.testcase.model.UserProfile;
 import cn.edu.tsinghua.util.Constant;
 import cn.edu.tsinghua.util.JFrameUtil;
+import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,62 +39,33 @@ import javax.swing.tree.TreePath;
  */
 public class AddOperationParameterUI extends javax.swing.JFrame {
 
-    private String profileCNShortName = "操作";
+    private String tipsString = "参数值之间用分号分隔，值和概率之间用逗号分隔，\n" +
+                                "例如（枚举型）：2,0.3;10,0.7;\n" +
+                                "例如（整型）：[1,20],0.3;(20,100],0.7; \n" +
+                                "例如（字符型）：beijing,0.3;shanghai,0.7; ";
+    
+    
+    private OperationObject operateObject;
+    private OperationalProfileUI mainFrame;
+    private DefaultMutableTreeNode operateNode;
+    //key->operate value->operate parameter
+    Map<OperationObject, List<OperateParameter>> opearteParamterMap;
 
-    private String profileCNName = "操作名称";
-
-    private Map<String, StringBuffer> stringMap;
-
-    private String projectName;
-    DefaultMutableTreeNode treeRoot = null;
-    //key->father op name, value->sun op list
-    private Map<OperationObject, List<OperationObject>> operationalProfileMap;
-
-    AddOperationParameterUI(String projectName, Map<String, Float> profileMap) {
+    public AddOperationParameterUI(OperationObject operateObject, OperationalProfileUI mainFrame, DefaultMutableTreeNode operateNode) {
         initComponents();
         JFrameUtil.setFrameLocationToMiddle(this);
-        treeInitialize(profileMap);
-        this.projectName = projectName;
-        //设置项目名称
-        jLabel3.setText(projectName);
+        this.operateObject = operateObject;
+        this.mainFrame = mainFrame;
+        this.opearteParamterMap = mainFrame.opearteParamterMap;
+        this.operateNode = operateNode;
+        //设置功能名称
+        jLabel2.setText(jLabel2.getText()+operateObject.getName());
+        
         this.setResizable(false);
         this.setVisible(true);
-
-        stringMap = new HashMap<String, StringBuffer>();
-        operationalProfileMap = new HashMap<OperationObject, List<OperationObject>>();
-
-        //初始化下拉框，stringMap和操作剖面Map
-        for (String keyString : profileMap.keySet()) {
-            OperationObject operationObject = new OperationObject(keyString, profileMap.get(keyString));
-            //    jComboBox1.addItem(operationObject);
-            operationalProfileMap.put(operationObject, new ArrayList<OperationObject>());
-            stringMap.put(keyString, new StringBuffer());
-        }
-
-        //init the customer string buffer map
-        for (String objectName : stringMap.keySet()) {
-            //    JFrameUtil.refreshTheTextArea(jTextArea1, stringMap.get(objectName), profileCNName, "概率");
-        }
-    }
-
-    //init the tree
-
-    private void treeInitialize(Map<String, Float> profileMap) {
-        treeRoot = new DefaultMutableTreeNode("功能列表");
-        for (String functionName : profileMap.keySet()) {
-            DefaultMutableTreeNode functionNode = new DefaultMutableTreeNode(new OperationObject(functionName, profileMap.get(functionName)));
-            treeRoot.add(functionNode);
-
-        }
-        DefaultTreeModel treeModel = new DefaultTreeModel(treeRoot);
-        jTree1.setModel(treeModel);
-    }
-
-    private abstract class OPMouseListener implements MouseListener {
-
-        public void mouseReleased(MouseEvent e) {
-            jTree1.addMouseListener(this);
-            JOptionPane.showMessageDialog(rootPane, "You clicked the tree");
+        
+        for(ParameterType pt : ParameterType.values()){
+            jComboBox1.addItem(pt);
         }
     }
 
@@ -136,7 +111,7 @@ public class AddOperationParameterUI extends javax.swing.JFrame {
         });
 
         jLabel2.setFont(new java.awt.Font("宋体", 1, 12)); // NOI18N
-        jLabel2.setText("功能名称：");
+        jLabel2.setText("操作名称：");
 
         jLabel5.setFont(new java.awt.Font("宋体", 0, 14)); // NOI18N
         jLabel5.setText("参数名称：");
@@ -147,7 +122,12 @@ public class AddOperationParameterUI extends javax.swing.JFrame {
         jLabel6.setText("参数类型：");
 
         jComboBox1.setFont(new java.awt.Font("宋体", 0, 14)); // NOI18N
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "请选择", "整型", "浮点型", "字符型", "枚举型" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "请选择" }));
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
 
         jLabel7.setFont(new java.awt.Font("宋体", 0, 14)); // NOI18N
         jLabel7.setText("参数出现概率：");
@@ -166,8 +146,17 @@ public class AddOperationParameterUI extends javax.swing.JFrame {
         });
 
         jTextArea1.setColumns(20);
+        jTextArea1.setForeground(new java.awt.Color(102, 102, 102));
         jTextArea1.setRows(5);
         jTextArea1.setText("参数值之间用分号分隔，值和概率之间用逗号分隔，\n例如（枚举型）：2,0.3;10,0.7;\n例如（整型）：[1,20],0.3;(20,100],0.7; \n例如（字符型）：beijing,0.3;shanghai,0.7; ");
+        jTextArea1.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jTextArea1FocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jTextArea1FocusLost(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTextArea1);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -179,9 +168,11 @@ public class AddOperationParameterUI extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(35, 35, 35)
                         .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(47, 47, 47))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -194,7 +185,7 @@ public class AddOperationParameterUI extends javax.swing.JFrame {
                         .addComponent(jTextField1))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 322, Short.MAX_VALUE)
+                            .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 332, Short.MAX_VALUE)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel7)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -221,26 +212,55 @@ public class AddOperationParameterUI extends javax.swing.JFrame {
                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 107, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 370, 300));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 380, 340));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-
+        this.dispose();
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        // TODO add your handling code here:
+        OperateParameter parameter = new OperateParameter();
+        parameter.setName(jTextField1.getText());
+        parameter.setPossibility(Float.parseFloat(jTextField2.getText()));
+        parameter.setType((ParameterType) jComboBox1.getSelectedItem());
+        parameter.setParaValuePossibility(jTextArea1.getText());
+        if(opearteParamterMap.containsKey(operateObject)){
+            opearteParamterMap.get(operateObject).add(parameter);
+        }else{
+            List<OperateParameter> paraList = new ArrayList<OperateParameter>();
+            paraList.add(parameter);
+            opearteParamterMap.put(operateObject, paraList);
+        }
+        mainFrame.refreshTree(operateNode, parameter);
+        this.dispose();
     }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void jTextArea1FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextArea1FocusGained
+        if(jTextArea1.getText().equals(tipsString)){
+            jTextArea1.setText("");
+        }
+    }//GEN-LAST:event_jTextArea1FocusGained
+
+    private void jTextArea1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextArea1FocusLost
+        if(jTextArea1.getText().trim().isEmpty()){
+            jTextArea1.setText(tipsString);
+        }
+    }//GEN-LAST:event_jTextArea1FocusLost
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -286,7 +306,7 @@ public class AddOperationParameterUI extends javax.swing.JFrame {
         opMap.put("Remove User", 0.1f);
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AddOperationParameterUI("TEST", opMap).setVisible(true);
+            //    new AddOperationParameterUI(null,null).setVisible(true);
             }
         });
     }

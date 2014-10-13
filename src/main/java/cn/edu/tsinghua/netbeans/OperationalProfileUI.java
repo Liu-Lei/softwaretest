@@ -5,6 +5,7 @@
  */
 package cn.edu.tsinghua.netbeans;
 
+import cn.edu.tsinghua.testcase.model.OperateParameter;
 import cn.edu.tsinghua.testcase.model.OperationObject;
 import cn.edu.tsinghua.testcase.model.UserProfile;
 import cn.edu.tsinghua.util.Constant;
@@ -42,14 +43,16 @@ public class OperationalProfileUI extends javax.swing.JFrame {
     private Map<String, StringBuffer> stringMap;
 
     private String projectName;
-    DefaultMutableTreeNode treeRoot = null;
+    private DefaultMutableTreeNode treeRoot = null;
+    //key->operate value->operate parameter
+    Map<OperationObject, List<OperateParameter>> opearteParamterMap;
     //key->father op name, value->sun op list
     private Map<OperationObject, List<OperationObject>> operationalProfileMap;
 
     OperationalProfileUI(String projectName, Map<String, Float> profileMap) {
         initComponents();
         JFrameUtil.setFrameLocationToMiddle(this);
-        treeInitialize(profileMap);
+        
         this.projectName = projectName;
         //设置项目名称
         jLabel3.setText(projectName);
@@ -58,29 +61,26 @@ public class OperationalProfileUI extends javax.swing.JFrame {
 
         stringMap = new HashMap<String, StringBuffer>();
         operationalProfileMap = new HashMap<OperationObject, List<OperationObject>>();
+        opearteParamterMap = new HashMap<OperationObject, List<OperateParameter>>();
 
         //初始化下拉框，stringMap和操作剖面Map
         for (String keyString : profileMap.keySet()) {
-            OperationObject operationObject = new OperationObject(keyString, profileMap.get(keyString));
+            OperationObject operationObject = new OperationObject(keyString, profileMap.get(keyString), "功能");
             //    jComboBox1.addItem(operationObject);
             operationalProfileMap.put(operationObject, new ArrayList<OperationObject>());
             stringMap.put(keyString, new StringBuffer());
         }
 
-        //init the customer string buffer map
-        for (String objectName : stringMap.keySet()) {
-            //    JFrameUtil.refreshTheTextArea(jTextArea1, stringMap.get(objectName), profileCNName, "概率");
-        }
+        treeInitialize(profileMap);
     }
 
     //init the tree
 
     private void treeInitialize(Map<String, Float> profileMap) {
         treeRoot = new DefaultMutableTreeNode("功能列表");
-        for (String functionName : profileMap.keySet()) {
-            DefaultMutableTreeNode functionNode = new DefaultMutableTreeNode(new OperationObject(functionName, profileMap.get(functionName)));
+        for (OperationObject functionObject : operationalProfileMap.keySet()) {
+            DefaultMutableTreeNode functionNode = new DefaultMutableTreeNode(functionObject);
             treeRoot.add(functionNode);
-
         }
         DefaultTreeModel treeModel = new DefaultTreeModel(treeRoot);
         jTree1.setModel(treeModel);
@@ -215,8 +215,28 @@ public class OperationalProfileUI extends javax.swing.JFrame {
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
     }//GEN-LAST:event_jButton6ActionPerformed
 
+    void refreshTree(DefaultMutableTreeNode operateNode, OperateParameter parameter){
+        
+        //在功能列表下级添加操作
+        DefaultMutableTreeNode paraNode = new DefaultMutableTreeNode(parameter);
+        operateNode.add(paraNode);
+        //--------下面代码实现显示新节点（自动展开父节点）-------  
+        DefaultTreeModel treeModel = (DefaultTreeModel) jTree1.getModel();
+        TreeNode[] nodes = treeModel.getPathToRoot(paraNode);
+        TreePath path = new TreePath(nodes);
+        jTree1.scrollPathToVisible(path);
+        jTree1.updateUI();
+        
+        for(OperationObject operateObject : opearteParamterMap.keySet()){
+            System.out.println(operateObject);
+            for(OperateParameter para : opearteParamterMap.get(operateObject)){
+                System.out.println(Constant.TAB__STRING+para.getName());
+            }
+        }
+    }
+    
     private void jTree1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTree1MouseReleased
-        DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jTree1.getLastSelectedPathComponent();//获取选中的节点
+        final DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jTree1.getLastSelectedPathComponent();//获取选中的节点
         DefaultMutableTreeNode parentNode = null;
         DefaultMutableTreeNode grandParentNode = null;
         if(selectedNode != null){
@@ -229,7 +249,7 @@ public class OperationalProfileUI extends javax.swing.JFrame {
         JPopupMenu popMenu = new JPopupMenu();
         if (evt.isPopupTrigger()) { //判断是否为右键单击，以便实现右键弹出菜单
 
-            if (parentNode.equals(treeRoot) && grandParentNode == null) {//功能列表的弹出菜单，用来添加操作节点
+            if (parentNode != null && parentNode.equals(treeRoot) && grandParentNode == null) {//功能列表的弹出菜单，用来添加操作节点
                 JMenuItem MenuRootNode = new JMenuItem("添加操作");
                 popMenu.add(MenuRootNode);
                 MenuRootNode.addActionListener(new ActionListener() {
@@ -254,8 +274,13 @@ public class OperationalProfileUI extends javax.swing.JFrame {
                             if(proFloat <= 0 || proFloat > 1){
                                 JOptionPane.showMessageDialog(rootPane, "操作概率必须大于0并且小于等于1。");             
                             }else{
-                                OperationObject operationObject = new OperationObject(nameString, proFloat);
-                                DefaultMutableTreeNode operationNode = new DefaultMutableTreeNode(nameString+"  "+proFloat);
+                                //添加操作进功能操作列表Map
+                                OperationObject functionOperationObject = (OperationObject) functionNode.getUserObject();
+                                OperationObject operationObject = new OperationObject(nameString, proFloat,profileCNShortName);
+                                operationalProfileMap.get(functionOperationObject).add(operationObject);
+                                
+                                //在功能列表下级添加操作
+                                DefaultMutableTreeNode operationNode = new DefaultMutableTreeNode(operationObject);
                                 functionNode.add(operationNode);
                                 //--------下面代码实现显示新节点（自动展开父节点）-------  
                                 DefaultTreeModel treeModel = (DefaultTreeModel) jTree1.getModel();
@@ -279,7 +304,8 @@ public class OperationalProfileUI extends javax.swing.JFrame {
                 MenuLeafNode1.addActionListener(new ActionListener() {
 
                     public void actionPerformed(ActionEvent e) {
-                        
+                        OperationObject operationObject = (OperationObject) selectedNode.getUserObject();
+                        new AddOperationParameterUI(operationObject,OperationalProfileUI.this,selectedNode);
                     }
                 });
                 //    MenuLeafNode2.addActionListener(this);
@@ -289,7 +315,7 @@ public class OperationalProfileUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jTree1MouseReleased
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_jButton8ActionPerformed
 
     /**

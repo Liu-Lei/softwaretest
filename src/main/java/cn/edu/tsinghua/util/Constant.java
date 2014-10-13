@@ -15,5 +15,7 @@ public class Constant {
     
     public final static String NEW_LINE_STRING = "\n";
     public final static String TAB__STRING = "\t";
+    public final static String BLANK__STRING = " ";
+    public final static String CN_COMMA__STRING = "：";
 
 }

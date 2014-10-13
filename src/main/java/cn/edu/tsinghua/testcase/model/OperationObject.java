@@ -1,5 +1,6 @@
 package cn.edu.tsinghua.testcase.model;
 
+import cn.edu.tsinghua.util.Constant;
 import java.io.Serializable;
 
 /**操作对象
@@ -8,10 +9,17 @@ import java.io.Serializable;
 public class OperationObject implements Serializable{
     private String name;
     private Float possibility;
+    
+    private String type;
 
-    public OperationObject(String name, Float possibility) {
+    public OperationObject(String name, Float possibility, String type) {
         this.name = name;
         this.possibility = possibility;
+        this.type = type;
+    }
+
+    public OperationObject(String name, Float possibility) {
+        this(name,possibility,null);
     }
 
     public OperationObject() {
@@ -35,7 +43,11 @@ public class OperationObject implements Serializable{
 
     @Override
     public String toString() {
-        return name;
+        if(type == null){
+            return name;
+        }else{
+            return type+Constant.CN_COMMA__STRING+name;
+        }
     }
     
 }
