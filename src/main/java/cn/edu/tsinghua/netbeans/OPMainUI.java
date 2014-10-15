@@ -20,11 +20,14 @@ import javax.swing.UnsupportedLookAndFeelException;
 public class OPMainUI extends javax.swing.JFrame {
     
     private String projectName;
+    
+    private OPCustomerUI nextUI;
 
     /**
      * Creates new form NumberAdditionUI
      */
     public OPMainUI() {
+        super("OPERATIONAL PROFILE");
         initComponents();
         //设置界面在屏幕中居中显示
         JFrameUtil.setFrameLocationToMiddle(this);
@@ -32,6 +35,7 @@ public class OPMainUI extends javax.swing.JFrame {
     }
 
     public OPMainUI(String projectName) {
+        super("OPERATIONAL PROFILE");
         initComponents();
         //设置界面在屏幕中居中显示
         JFrameUtil.setFrameLocationToMiddle(this);
@@ -94,8 +98,10 @@ public class OPMainUI extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "请输入要创建的操作剖面项目名称。");
         }else{
             this.dispose();
-            OPCustomerUI oPCustomerUI = new OPCustomerUI(projectName);
-            oPCustomerUI.setVisible(true);
+            if(nextUI == null){
+                nextUI = new OPCustomerUI(projectName,this);
+            }
+            nextUI.setVisible(true);
         }
     }//GEN-LAST:event_jButton4ActionPerformed
 

@@ -35,10 +35,16 @@ public class OPSystemModeUI extends javax.swing.JFrame {
     private Map<OperationObject, List<OperationObject>> systemModeProfileMap;
     
     private Map<String, Float> userProfileMap;
+    
+    
+    private OPUserUI previousUI;
+    private OPFunctionalUI nextUI;
    
 
-    OPSystemModeUI(String projectName, Map<String, Float> userProfileMap) {
+    OPSystemModeUI(String projectName, Map<String, Float> userProfileMap, OPUserUI userUI) {
+        super("OPERATIONAL PROFILE");
         initComponents();
+        this.previousUI = userUI;
         JFrameUtil.setFrameLocationToMiddle(this);
         this.projectName = projectName;
         this.userProfileMap = userProfileMap;
@@ -86,6 +92,7 @@ public class OPSystemModeUI extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(800, 600));
         setPreferredSize(new java.awt.Dimension(800, 600));
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -244,11 +251,18 @@ public class OPSystemModeUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        if(previousUI != null){
+            previousUI.setVisible(true);
+            this.dispose();
+        }
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        if(nextUI == null){
+            nextUI = new OPFunctionalUI(projectName, OPUtil.getOverallOperationList(systemModeProfileMap), this);
+        }
+        nextUI.setVisible(true);
         this.dispose();
-        new OPFunctionalUI(projectName, OPUtil.getOverallOperationList(systemModeProfileMap));
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
@@ -309,7 +323,7 @@ public class OPSystemModeUI extends javax.swing.JFrame {
         opMap.put("Attendants", 0.062f);
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new OPSystemModeUI("TEST",opMap).setVisible(true);
+                new OPSystemModeUI("TEST",opMap,null).setVisible(true);
             }
         });
     }

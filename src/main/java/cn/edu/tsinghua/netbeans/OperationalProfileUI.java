@@ -48,9 +48,15 @@ public class OperationalProfileUI extends javax.swing.JFrame {
     Map<OperationObject, List<OperateParameter>> opearteParamterMap;
     //key->father op name, value->sun op list
     private Map<OperationObject, List<OperationObject>> operationalProfileMap;
+    
+    
+    private OPFunctionalUI previousUI;
+    private CreateTestCaseUI nextUI;
 
-    OperationalProfileUI(String projectName, Map<String, Float> profileMap) {
+    OperationalProfileUI(String projectName, Map<String, Float> profileMap, OPFunctionalUI functionalUI) {
+        super("OPERATIONAL PROFILE");
         initComponents();
+        this.previousUI = functionalUI;
         JFrameUtil.setFrameLocationToMiddle(this);
         
         this.projectName = projectName;
@@ -213,6 +219,10 @@ public class OperationalProfileUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        if(previousUI != null){
+            previousUI.setVisible(true);
+            this.dispose();
+        }
     }//GEN-LAST:event_jButton6ActionPerformed
 
     void refreshTree(DefaultMutableTreeNode operateNode, OperateParameter parameter){
@@ -315,7 +325,11 @@ public class OperationalProfileUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jTree1MouseReleased
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-        
+        if(nextUI == null){
+            nextUI = new CreateTestCaseUI(projectName, opearteParamterMap, this);
+        }
+        nextUI.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jButton8ActionPerformed
 
     /**
@@ -362,7 +376,7 @@ public class OperationalProfileUI extends javax.swing.JFrame {
         opMap.put("Remove User", 0.1f);
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new OperationalProfileUI("TEST", opMap).setVisible(true);
+                new OperationalProfileUI("TEST", opMap, null).setVisible(true);
             }
         });
     }

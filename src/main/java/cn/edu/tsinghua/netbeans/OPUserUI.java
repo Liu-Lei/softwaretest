@@ -33,13 +33,16 @@ public class OPUserUI extends javax.swing.JFrame {
     private Map<OperationObject,List<OperationObject>> userProfileMap;
     private List<OperationObject> customerProfileList;
     
-    
+    private OPCustomerUI previousUI;
+    private OPSystemModeUI nextUI;
 
     /**初始化用户剖面构造
      * Creates new form OPUserUI
      */
-    public OPUserUI(String projectName, List<OperationObject> customerProfileList) {
+    public OPUserUI(String projectName, List<OperationObject> customerProfileList,OPCustomerUI customerUI) {
+        super("OPERATIONAL PROFILE");
         initComponents();
+        previousUI = customerUI;
         //设置界面在屏幕中居中显示
         JFrameUtil.setFrameLocationToMiddle(this);
         this.projectName = projectName;
@@ -90,6 +93,8 @@ public class OPUserUI extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(800, 600));
+        setPreferredSize(new java.awt.Dimension(800, 600));
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -247,12 +252,19 @@ public class OPUserUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        if(previousUI != null){
+            previousUI.setVisible(true);
+            this.dispose();
+        }
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         this.dispose();
         Map<String, Float> OPMap = OPUtil.getOverallOperationList(userProfileMap);
-        new OPSystemModeUI(projectName, OPMap).setVisible(true);
+        if(nextUI == null){
+            nextUI = new OPSystemModeUI(projectName, OPMap, this);
+        }
+        nextUI.setVisible(true);
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
@@ -314,7 +326,7 @@ public class OPUserUI extends javax.swing.JFrame {
         customerProfileList.add(new OperationObject("杭州地铁公司", 0.5f));
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new OPUserUI("TEST",customerProfileList).setVisible(true);
+                new OPUserUI("TEST",customerProfileList,null).setVisible(true);
             }
         });
     }

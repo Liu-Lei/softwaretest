@@ -33,16 +33,20 @@ public class OPFunctionalUI extends javax.swing.JFrame {
     private String projectName;
     //key->father op name, value->sun op list
     private Map<OperationObject, List<OperationObject>> functionProfileMap;
+    
+    private OPSystemModeUI previousUI;
+    private OperationalProfileUI nextUI;
    
 
-    OPFunctionalUI(String projectName, Map<String, Float> profileMap) {
+    OPFunctionalUI(String projectName, Map<String, Float> profileMap, OPSystemModeUI systemModeUI) {
+        super("OPERATIONAL PROFILE");
         initComponents();
+        this.previousUI = systemModeUI;
         JFrameUtil.setFrameLocationToMiddle(this);
         this.projectName = projectName;
         //设置项目名称
         jLabel3.setText(projectName);
         this.setResizable(false);
-        this.setVisible(true);
         
         stringMap = new HashMap<String, StringBuffer>();
         functionProfileMap = new HashMap<OperationObject, List<OperationObject>>();
@@ -235,11 +239,19 @@ public class OPFunctionalUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        if(previousUI != null){
+            previousUI.setVisible(true);
+            this.dispose();
+        }
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        if(nextUI == null){
+            nextUI = new OperationalProfileUI(projectName, OPUtil.getOverallOperationList(functionProfileMap), this);
+        }
+        nextUI.setVisible(true);
         this.dispose();
-        new OperationalProfileUI(projectName, OPUtil.getOverallOperationList(functionProfileMap));
+        
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
@@ -300,7 +312,7 @@ public class OPFunctionalUI extends javax.swing.JFrame {
         opMap.put("Attendants use mode", 0.1f);
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new OPFunctionalUI("TEST",opMap).setVisible(true);
+                new OPFunctionalUI("TEST",opMap,null).setVisible(true);
             }
         });
     }
