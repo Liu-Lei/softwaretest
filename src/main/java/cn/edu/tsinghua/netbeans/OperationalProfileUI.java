@@ -326,7 +326,7 @@ public class OperationalProfileUI extends javax.swing.JFrame {
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
         if(nextUI == null){
-            nextUI = new CreateTestCaseUI(projectName, opearteParamterMap, this);
+            nextUI = new CreateTestCaseUI(projectName, opearteParamterMap, operationalProfileMap, this);
         }
         nextUI.setVisible(true);
         this.dispose();

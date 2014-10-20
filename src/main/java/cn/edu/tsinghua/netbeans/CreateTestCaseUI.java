@@ -27,16 +27,19 @@ public class CreateTestCaseUI extends javax.swing.JFrame {
     
     private String projectName;
     
-    //key->operate value->operate parameter
-    private Map<OperationObject, List<OperateParameter>> opearteParamterMap;
+    //key->operation object   value->operate parameter
+    private Map<OperationObject, List<OperateParameter>> operateParamterMap;
     
+    //key -> funcion object  value -> operation object
+    private Map<OperationObject, List<OperationObject>> operationalProfileMap;
     private OperationalProfileUI previousUI;
     private OPSystemModeUI nextUI;
 
     /**初始化用户剖面构造
      * Creates new form OPUserUI
      */
-    public CreateTestCaseUI(String projectName, Map<OperationObject, List<OperateParameter>> opearteParamterMap,OperationalProfileUI operationalProfileUI) {
+    public CreateTestCaseUI(String projectName, Map<OperationObject, List<OperateParameter>> opearteParamterMap,
+            Map<OperationObject, List<OperationObject>> operationalProfileMap,OperationalProfileUI operationalProfileUI) {
         super("OPERATIONAL PROFILE");
         initComponents();
         previousUI = operationalProfileUI;
@@ -46,6 +49,9 @@ public class CreateTestCaseUI extends javax.swing.JFrame {
         //设置项目名称
         jLabel2.setText(jLabel2.getText()+projectName);
         this.setResizable(false);
+        
+        this.operateParamterMap = opearteParamterMap;
+        this.operationalProfileMap = operationalProfileMap;
         
     }
 
@@ -192,8 +198,28 @@ public class CreateTestCaseUI extends javax.swing.JFrame {
             testcaseCount = Integer.parseInt(testcaseCountString);
         }catch(NumberFormatException nfe){
             JOptionPane.showMessageDialog(rootPane, "生成的测试用例数量必须为一个整数！");
-            logger.error("The test case count isn't a number!",nfe);
+            logger.error("The test case count isn't a number!");
+            return;
         }
+        
+        
+        if(operateParamterMap != null || operateParamterMap.size() < 1 || operationalProfileMap == null || operationalProfileMap.size() < 1){
+            for(OperationObject functionObject : operationalProfileMap.keySet()){
+                String functionName = functionObject.getName();
+                for(OperationObject operationObject : operationalProfileMap.get(functionObject)){
+                    String operationName = operationObject.getName();
+                    int operateCount = (int) (operationObject.getPossibility()*testcaseCount);
+                }
+                
+                
+                
+                
+            }
+        }else{
+            JOptionPane.showMessageDialog(rootPane, "无操作可供生成测试用例，请返回上一步添加操作。");
+            return;
+        }
+        
         
     }//GEN-LAST:event_jButton4ActionPerformed
 
@@ -261,7 +287,7 @@ public class CreateTestCaseUI extends javax.swing.JFrame {
         customerProfileList.add(new OperationObject("杭州地铁公司", 0.5f));
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new CreateTestCaseUI("TEST", null, null);
+                new CreateTestCaseUI("TEST", null, null, null);
             }
         });
     }
