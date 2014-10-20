@@ -11,10 +11,10 @@ package cn.edu.tsinghua.testcase.model;
  * @author lei
  */
 public enum ParameterType {
-    INTEGER("整形"),FLOAT("浮点型"),STRING("字符型"),ENUM("枚举型");
+    INTEGER("整型"),FLOAT("浮点型"),STRING("字符型"),ENUM("枚举型");
     
     private String cnName;
-    private ParameterType(String cnName) {
+        private ParameterType(String cnName) {
         this.cnName = cnName;
     }
     

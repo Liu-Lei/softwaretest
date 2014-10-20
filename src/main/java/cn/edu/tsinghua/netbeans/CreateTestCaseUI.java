@@ -11,14 +11,19 @@ import cn.edu.tsinghua.util.JFrameUtil;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author liulei
  */
 public class CreateTestCaseUI extends javax.swing.JFrame {
+    
+    private Logger logger = LoggerFactory.getLogger(CreateTestCaseUI.class);
     
     private String projectName;
     
@@ -106,6 +111,11 @@ public class CreateTestCaseUI extends javax.swing.JFrame {
         jLabel4.setText("请输入需要生成的测试用例个数：");
 
         jTextField1.setFont(new java.awt.Font("宋体", 0, 14)); // NOI18N
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
 
         jLabel6.setFont(new java.awt.Font("宋体", 0, 14)); // NOI18N
         jLabel6.setText("请输入测试用例存放目录：");
@@ -174,7 +184,17 @@ public class CreateTestCaseUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-
+        JOptionPane.showMessageDialog(rootPane, "TEST");
+        String testcaseCountString = jTextField1.getText();
+        String storgePath = jTextField2.getText();
+        int testcaseCount = 0;
+        try{
+            testcaseCount = Integer.parseInt(testcaseCountString);
+        }catch(NumberFormatException nfe){
+            JOptionPane.showMessageDialog(rootPane, "生成的测试用例数量必须为一个整数！");
+            logger.error("The test case count isn't a number!",nfe);
+        }
+        
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
@@ -191,6 +211,10 @@ public class CreateTestCaseUI extends javax.swing.JFrame {
         nextUI.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1ActionPerformed
 
     
     /**
@@ -237,6 +261,7 @@ public class CreateTestCaseUI extends javax.swing.JFrame {
         customerProfileList.add(new OperationObject("杭州地铁公司", 0.5f));
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+                new CreateTestCaseUI("TEST", null, null);
             }
         });
     }
