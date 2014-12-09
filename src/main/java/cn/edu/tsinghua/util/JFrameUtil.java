@@ -1,6 +1,5 @@
 package cn.edu.tsinghua.util;
 
-import cn.edu.tsinghua.gui.OPConstant;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import javax.swing.*;
@@ -42,6 +41,6 @@ public class JFrameUtil {
     //设置界面在屏幕中居中显示
     public static void setFrameLocationToMiddle(JFrame frame) {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        frame.setLocation((int)screenSize.getWidth()/2-OPConstant.FRAME_WIDTH/2,(int)screenSize.getHeight()/2-OPConstant.FRAME_HEIGHT/2);
+//        frame.setLocation((int)screenSize.getWidth()/2-OPConstant.FRAME_WIDTH/2,(int)screenSize.getHeight()/2-OPConstant.FRAME_HEIGHT/2);
     }
 }

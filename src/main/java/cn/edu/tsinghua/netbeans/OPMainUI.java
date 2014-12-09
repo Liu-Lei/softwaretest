@@ -5,7 +5,6 @@
  */
 package cn.edu.tsinghua.netbeans;
 
-import cn.edu.tsinghua.gui.OPConstant;
 import cn.edu.tsinghua.util.JFrameUtil;
 import java.awt.Dimension;
 import java.awt.Toolkit;

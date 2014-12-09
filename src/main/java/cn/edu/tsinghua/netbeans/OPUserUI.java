@@ -5,7 +5,6 @@
  */
 package cn.edu.tsinghua.netbeans;
 
-import cn.edu.tsinghua.gui.OPConstant;
 import cn.edu.tsinghua.testcase.model.OperationObject;
 import cn.edu.tsinghua.testcase.model.UserProfile;
 import cn.edu.tsinghua.util.JFrameUtil;
