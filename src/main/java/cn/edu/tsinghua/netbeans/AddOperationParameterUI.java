@@ -41,7 +41,7 @@ public class AddOperationParameterUI extends javax.swing.JFrame {
 
     private String tipsString = "参数值之间用分号分隔，值和概率之间用逗号分隔，\n" +
                                 "例如（枚举型）：2,0.3;10,0.7;\n" +
-                                "例如（整型）：[1,20],0.3;(20,100],0.7; \n" +
+                                "例如（整型）：[1-20],0.3;(20-100],0.7; \n" +
                                 "例如（字符型）：beijing,0.3;shanghai,0.7; ";
     
     
@@ -148,7 +148,7 @@ public class AddOperationParameterUI extends javax.swing.JFrame {
         jTextArea1.setColumns(20);
         jTextArea1.setForeground(new java.awt.Color(102, 102, 102));
         jTextArea1.setRows(5);
-        jTextArea1.setText("参数值之间用分号分隔，值和概率之间用逗号分隔，\n例如（枚举型）：2,0.3;10,0.7;\n例如（整型）：[1,20],0.3;(20,100],0.7; \n例如（字符型）：beijing,0.3;shanghai,0.7; ");
+        jTextArea1.setText("参数值之间用分号分隔，值和概率之间用逗号分隔，\n例如（枚举型）：2,0.3;10,0.7;\n例如（整型）：[1-20],0.3;(20-100],0.7; \n例如（字符型）：beijing,0.3;shanghai,0.7; ");
         jTextArea1.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 jTextArea1FocusGained(evt);

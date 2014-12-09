@@ -7,10 +7,14 @@ package cn.edu.tsinghua.netbeans;
 
 import cn.edu.tsinghua.testcase.model.OperateParameter;
 import cn.edu.tsinghua.testcase.model.OperationObject;
+import cn.edu.tsinghua.util.Constant;
 import cn.edu.tsinghua.util.JFrameUtil;
+import cn.edu.tsinghua.util.XMLUtil;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -146,19 +150,18 @@ public class CreateTestCaseUI extends javax.swing.JFrame {
                         .addGap(80, 80, 80)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addComponent(jLabel6)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                    .addComponent(jLabel4)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jTextField2)
                                     .addComponent(jTextField1)))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(159, 159, 159)
                         .addComponent(jLabel3)))
-                .addContainerGap(80, Short.MAX_VALUE))
+                .addGap(80, 80, 80))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -202,17 +205,28 @@ public class CreateTestCaseUI extends javax.swing.JFrame {
             return;
         }
         
-        
+        //根据操作以及操作的相应参数生成测试用例XML文件
         if(operateParamterMap != null || operateParamterMap.size() < 1 || operationalProfileMap == null || operationalProfileMap.size() < 1){
             for(OperationObject functionObject : operationalProfileMap.keySet()){
                 String functionName = functionObject.getName();
                 for(OperationObject operationObject : operationalProfileMap.get(functionObject)){
                     String operationName = operationObject.getName();
                     int operateCount = (int) (operationObject.getPossibility()*testcaseCount);
+                    List<OperateParameter> operateParameterList = operateParamterMap.get(operationObject);
+                    
+                    if(operateCount > 0){
+                        //根据需要的操作用例的数量生成对应此操作的测试用例文件
+                        for(int i = 0; i < operateCount; i++){
+                            try {
+                                XMLUtil.generateXMLFileByOperation(storgePath, functionName, operationName, operateParameterList, i);
+                            } catch (FileNotFoundException ex) {
+                                System.out.println(ex.getMessage());
+                                continue;
+                            }
+                        }
+                    }
+                    
                 }
-                
-                
-                
                 
             }
         }else{

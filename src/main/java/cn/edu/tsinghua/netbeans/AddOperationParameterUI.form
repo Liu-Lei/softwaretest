@@ -230,7 +230,7 @@
                   <Color blue="66" green="66" red="66" type="rgb"/>
                 </Property>
                 <Property name="rows" type="int" value="5"/>
-                <Property name="text" type="java.lang.String" value="&#x53c2;&#x6570;&#x503c;&#x4e4b;&#x95f4;&#x7528;&#x5206;&#x53f7;&#x5206;&#x9694;&#xff0c;&#x503c;&#x548c;&#x6982;&#x7387;&#x4e4b;&#x95f4;&#x7528;&#x9017;&#x53f7;&#x5206;&#x9694;&#xff0c;&#xa;&#x4f8b;&#x5982;&#xff08;&#x679a;&#x4e3e;&#x578b;&#xff09;&#xff1a;2,0.3;10,0.7;&#xa;&#x4f8b;&#x5982;&#xff08;&#x6574;&#x578b;&#xff09;&#xff1a;[1,20],0.3;(20,100],0.7; &#xa;&#x4f8b;&#x5982;&#xff08;&#x5b57;&#x7b26;&#x578b;&#xff09;&#xff1a;beijing,0.3;shanghai,0.7; "/>
+                <Property name="text" type="java.lang.String" value="&#x53c2;&#x6570;&#x503c;&#x4e4b;&#x95f4;&#x7528;&#x5206;&#x53f7;&#x5206;&#x9694;&#xff0c;&#x503c;&#x548c;&#x6982;&#x7387;&#x4e4b;&#x95f4;&#x7528;&#x9017;&#x53f7;&#x5206;&#x9694;&#xff0c;&#xa;&#x4f8b;&#x5982;&#xff08;&#x679a;&#x4e3e;&#x578b;&#xff09;&#xff1a;2,0.3;10,0.7;&#xa;&#x4f8b;&#x5982;&#xff08;&#x6574;&#x578b;&#xff09;&#xff1a;[1-20],0.3;(20-100],0.7; &#xa;&#x4f8b;&#x5982;&#xff08;&#x5b57;&#x7b26;&#x578b;&#xff09;&#xff1a;beijing,0.3;shanghai,0.7; "/>
               </Properties>
               <Events>
                 <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jTextArea1FocusGained"/>

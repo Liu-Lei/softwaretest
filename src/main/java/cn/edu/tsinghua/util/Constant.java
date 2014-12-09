@@ -17,5 +17,15 @@ public class Constant {
     public final static String TAB__STRING = "\t";
     public final static String BLANK__STRING = " ";
     public final static String CN_COMMA__STRING = "：";
+    
+    public final static String PARA_SPLIT_STRING = ";";
+    public final static String LEFT_BRACKET = "[";
+    public final static String EN_DASH_STRING = "-";
+    public final static String UNDERLINE_STRING = "_";
+    
+    public final static String PARAMETER_TYPE_INTEGER = "整型";
+    public final static String PARAMETER_TYPE_FLOAT = "浮点型";
+    public final static String PARAMETER_TYPE_STRING = "字符型";
+    public final static String PARAMETER_TYPE_ENUM = "枚举型";
 
 }

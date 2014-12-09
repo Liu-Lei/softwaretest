@@ -6,12 +6,14 @@
 
 package cn.edu.tsinghua.testcase.model;
 
+import cn.edu.tsinghua.util.Constant;
+
 /**
  *
  * @author lei
  */
 public enum ParameterType {
-    INTEGER("整型"),FLOAT("浮点型"),STRING("字符型"),ENUM("枚举型");
+    INTEGER(Constant.PARAMETER_TYPE_INTEGER),FLOAT(Constant.PARAMETER_TYPE_FLOAT),STRING(Constant.PARAMETER_TYPE_STRING),ENUM(Constant.PARAMETER_TYPE_ENUM);
     
     private String cnName;
         private ParameterType(String cnName) {
