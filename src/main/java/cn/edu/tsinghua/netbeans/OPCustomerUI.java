@@ -7,6 +7,7 @@ package cn.edu.tsinghua.netbeans;
 
 import cn.edu.tsinghua.testcase.model.OperationObject;
 import cn.edu.tsinghua.testcase.model.UserProfile;
+import cn.edu.tsinghua.util.CheckUtil;
 import cn.edu.tsinghua.util.Constant;
 import cn.edu.tsinghua.util.JFrameUtil;
 import java.util.ArrayList;
@@ -24,6 +25,10 @@ public class OPCustomerUI extends javax.swing.JFrame {
     private StringBuffer customerString = new StringBuffer();
     private List<OperationObject> customerProfile = new ArrayList<OperationObject>();
     
+   private String profileCNShortName = "客户";
+    
+    private String profileCNName = "客户名称";
+    
     private String projectName;
     
     private OPMainUI previousUI;
@@ -40,7 +45,7 @@ public class OPCustomerUI extends javax.swing.JFrame {
         this.projectName = projectName;
         jLabel3.setText(projectName);
         this.setResizable(false);
-        JFrameUtil.refreshTheTextArea(jTextArea1, customerString, "客户名称", "概率");
+        JFrameUtil.refreshTheTextArea(jTextArea1, customerString, profileCNName, "概率");
     }
 
     /**
@@ -161,20 +166,12 @@ public class OPCustomerUI extends javax.swing.JFrame {
         String customerName = JOptionPane.showInputDialog(this,"请输入客户名称");
         String customerPro = JOptionPane.showInputDialog(this,"请输入客户使用概率");
         
-        Float proFloat = 0f;
-        try{
-            proFloat = Float.parseFloat(customerPro);
-        }catch(NumberFormatException ex){
-            JOptionPane.showMessageDialog(this, "使用概率必须为字符型数字。");
-            return;
-        }
-        
-        if(customerName.trim().isEmpty() || proFloat <= 0 || proFloat > 1){
-            JOptionPane.showMessageDialog(this, "客户名称或者概率不能为空，并且使用概率不能大于1。");
-        }else{
+        if(CheckUtil.checkNameAndPossibility(profileCNShortName, customerName, customerPro, rootPane)){
             JFrameUtil.refreshTheTextArea(jTextArea1, customerString, customerName, customerPro);
-            OperationObject customerObject = new OperationObject(customerName,proFloat);
+            OperationObject customerObject = new OperationObject(customerName,Float.parseFloat(customerPro));
             customerProfile.add(customerObject);
+        }else{
+            return;
         }
     }//GEN-LAST:event_jButton4ActionPerformed
 

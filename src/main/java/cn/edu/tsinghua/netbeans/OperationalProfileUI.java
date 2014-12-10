@@ -8,6 +8,7 @@ package cn.edu.tsinghua.netbeans;
 import cn.edu.tsinghua.testcase.model.OperateParameter;
 import cn.edu.tsinghua.testcase.model.OperationObject;
 import cn.edu.tsinghua.testcase.model.UserProfile;
+import cn.edu.tsinghua.util.CheckUtil;
 import cn.edu.tsinghua.util.Constant;
 import cn.edu.tsinghua.util.JFrameUtil;
 import java.awt.event.ActionEvent;
@@ -44,7 +45,7 @@ public class OperationalProfileUI extends javax.swing.JFrame {
 
     private String projectName;
     private DefaultMutableTreeNode treeRoot = null;
-    //key->operate value->operate parameter
+    //key->operate value ->operate parameter
     Map<OperationObject, List<OperateParameter>> opearteParamterMap;
     //key->father op name, value->sun op list
     private Map<OperationObject, List<OperationObject>> operationalProfileMap;
@@ -225,26 +226,6 @@ public class OperationalProfileUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton6ActionPerformed
 
-    void refreshTree(DefaultMutableTreeNode operateNode, OperateParameter parameter){
-        
-        //在功能列表下级添加操作
-        DefaultMutableTreeNode paraNode = new DefaultMutableTreeNode(parameter);
-        operateNode.add(paraNode);
-        //--------下面代码实现显示新节点（自动展开父节点）-------  
-        DefaultTreeModel treeModel = (DefaultTreeModel) jTree1.getModel();
-        TreeNode[] nodes = treeModel.getPathToRoot(paraNode);
-        TreePath path = new TreePath(nodes);
-        jTree1.scrollPathToVisible(path);
-        jTree1.updateUI();
-        
-        for(OperationObject operateObject : opearteParamterMap.keySet()){
-            System.out.println(operateObject);
-            for(OperateParameter para : opearteParamterMap.get(operateObject)){
-                System.out.println(Constant.TAB__STRING+para.getName());
-            }
-        }
-    }
-    
     private void jTree1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTree1MouseReleased
         final DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jTree1.getLastSelectedPathComponent();//获取选中的节点
         DefaultMutableTreeNode parentNode = null;
@@ -257,9 +238,10 @@ public class OperationalProfileUI extends javax.swing.JFrame {
         }
 
         JPopupMenu popMenu = new JPopupMenu();
-        if (evt.isPopupTrigger()) { //判断是否为右键单击，以便实现右键弹出菜单
-
-            if (parentNode != null && parentNode.equals(treeRoot) && grandParentNode == null) {//功能列表的弹出菜单，用来添加操作节点
+        //判断是否为右键单击，以便实现右键弹出菜单
+        if (evt.isPopupTrigger()) { 
+            //功能列表的弹出菜单，用来添加操作节点
+            if (parentNode != null && parentNode.equals(treeRoot) && grandParentNode == null) {
                 JMenuItem MenuRootNode = new JMenuItem("添加操作");
                 popMenu.add(MenuRootNode);
                 MenuRootNode.addActionListener(new ActionListener() {
@@ -268,62 +250,106 @@ public class OperationalProfileUI extends javax.swing.JFrame {
                         //   OperationObject functionOperationObject = (OperationObject)selectedNode.getUserObject();
                         DefaultMutableTreeNode functionNode = (DefaultMutableTreeNode) jTree1.getLastSelectedPathComponent();
                         
-                        String nameString = JOptionPane.showInputDialog("请输入" + profileCNName);
-                        String possibilityString = JOptionPane.showInputDialog("请输入"+profileCNShortName+"使用概率");
+                        String nameString = JOptionPane.showInputDialog(rootPane, "请输入" + profileCNName);
+                        String possibilityString = JOptionPane.showInputDialog(rootPane, "请输入"+profileCNShortName+"使用概率");
                         
                         //判断用户名概率是否为空
                         //判断概率是否为浮点类型
-                        if(nameString != null && possibilityString != null && !nameString.trim().isEmpty() && !possibilityString.trim().isEmpty()){
-                            Float proFloat = 0f;
-                            try{
-                                proFloat = Float.parseFloat(possibilityString);
-                            }catch(NumberFormatException ex){
-                                JOptionPane.showMessageDialog(rootPane, "操作概率必须为数字。");
-                                return;
-                            }
-                            if(proFloat <= 0 || proFloat > 1){
-                                JOptionPane.showMessageDialog(rootPane, "操作概率必须大于0并且小于等于1。");             
-                            }else{
-                                //添加操作进功能操作列表Map
-                                OperationObject functionOperationObject = (OperationObject) functionNode.getUserObject();
-                                OperationObject operationObject = new OperationObject(nameString, proFloat,profileCNShortName);
-                                operationalProfileMap.get(functionOperationObject).add(operationObject);
-                                
-                                //在功能列表下级添加操作
-                                DefaultMutableTreeNode operationNode = new DefaultMutableTreeNode(operationObject);
-                                functionNode.add(operationNode);
-                                //--------下面代码实现显示新节点（自动展开父节点）-------  
-                                DefaultTreeModel treeModel = (DefaultTreeModel) jTree1.getModel();
-                                TreeNode[] nodes = treeModel.getPathToRoot(operationNode);
-                                TreePath path = new TreePath(nodes);
-                                jTree1.scrollPathToVisible(path);
-                                jTree1.updateUI();
-                            }
+                        if(CheckUtil.checkNameAndPossibility(profileCNShortName, nameString, possibilityString, rootPane)){
+                            //添加操作进功能操作列表Map
+                            OperationObject functionOperationObject = (OperationObject) functionNode.getUserObject();
+                            OperationObject operationObject = new OperationObject(nameString, Float.parseFloat(possibilityString),profileCNShortName);
+                            operationalProfileMap.get(functionOperationObject).add(operationObject);
+
+                            //在功能列表下级添加操作
+                            DefaultMutableTreeNode operationNode = new DefaultMutableTreeNode(operationObject);
+                            functionNode.add(operationNode);
+                            //--------下面代码实现显示新节点（自动展开父节点）------- 
+                            refreshTree(jTree1, operationNode);
                         }else{
-                            JOptionPane.showMessageDialog(rootPane, profileCNName+"或者概率不能为空。");
                             return;
                         }
                         
                     }
                 });
-            } else if (grandParentNode.equals(treeRoot)) {//操作节点的弹出菜单，用来增加操作参数，修改参数等
+            //操作右键菜单
+            } else if (grandParentNode != null && grandParentNode.equals(treeRoot)) {//操作节点的弹出菜单，用来增加操作参数，修改参数等
                 JMenuItem MenuLeafNode1 = new JMenuItem("增加操作参数");
                 JMenuItem MenuLeafNode2 = new JMenuItem("删除操作");
                 popMenu.add(MenuLeafNode1);
                 popMenu.add(MenuLeafNode2);
+                
+                //增加操作参数
                 MenuLeafNode1.addActionListener(new ActionListener() {
-
                     public void actionPerformed(ActionEvent e) {
                         OperationObject operationObject = (OperationObject) selectedNode.getUserObject();
                         new AddOperationParameterUI(operationObject,OperationalProfileUI.this,selectedNode);
                     }
                 });
-                //    MenuLeafNode2.addActionListener(this);
+                
+                //删除操作
+                MenuLeafNode2.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        //验证过程
+                        int varifyFlag = JOptionPane.showConfirmDialog(rootPane, "确定删除此操作？", "删除操作", JOptionPane.YES_NO_OPTION);
+                        if(varifyFlag == 0){
+                            //操作对象
+                            OperationObject operationObject = (OperationObject) selectedNode.getUserObject();
+                            //从功能列表->操作Map中删除此操作
+                            DefaultMutableTreeNode parentNode = (DefaultMutableTreeNode)selectedNode.getParent();
+                            operationalProfileMap.get(parentNode.getUserObject()).remove(operationObject);
+                                
+                            //在Tree树上删除此操作
+                            parentNode.remove(selectedNode);
+                            refreshTree(jTree1, parentNode);
+                        }else{
+                            // Cancel the delete operate, do nothing
+                            ;
+                        }
+                        
+                    }
+                });
+            //操作参数右键
+            } else if (grandParentNode != null && grandParentNode.getParent().equals(treeRoot)){
+                //验证过程
+                int varifyFlag = JOptionPane.showConfirmDialog(rootPane, "确定删除此操作参数？", "删除操作参数", JOptionPane.YES_NO_OPTION);
+                if(varifyFlag == 0){
+                    //操作参数
+                    OperateParameter parameter = (OperateParameter) selectedNode.getUserObject();
+                    //操作对象
+                    OperationObject operationObject = (OperationObject)parentNode.getUserObject();
+                    //删除操作对象的参数
+                    opearteParamterMap.get(operationObject).remove(parameter);
+                    
+                    //从JTree上删除操作参数
+                    parentNode.remove(selectedNode);
+                    refreshTree(jTree1, parentNode);
+                }
             }
             popMenu.show(evt.getComponent(), evt.getX(), evt.getY()); //弹出菜单的显示位置
         }
     }//GEN-LAST:event_jTree1MouseReleased
 
+    void refreshTree(DefaultMutableTreeNode operateNode, OperateParameter parameter){
+        
+        //在功能列表下级添加操作
+        DefaultMutableTreeNode paraNode = new DefaultMutableTreeNode(parameter);
+        operateNode.add(paraNode);
+        //--------下面代码实现显示新节点（自动展开父节点）-------  
+        refreshTree(jTree1, paraNode);
+    }
+    
+    void refreshTree(JTree jTree, DefaultMutableTreeNode treeNode){
+        
+        //--------下面代码实现显示新节点（自动展开父节点）-------  
+        DefaultTreeModel treeModel = (DefaultTreeModel) jTree.getModel();
+        TreeNode[] nodes = treeModel.getPathToRoot(treeNode);
+        TreePath path = new TreePath(nodes);
+        jTree.scrollPathToVisible(path);
+        jTree.updateUI();
+        
+    }
+    
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
         if(nextUI == null){
             nextUI = new CreateTestCaseUI(projectName, opearteParamterMap, operationalProfileMap, this);
