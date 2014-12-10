@@ -6,6 +6,7 @@ package cn.edu.tsinghua.util;
 public class Constant {
     //项目存储路径
     public final static String OBJECT_SERIALIZATION_STORAGE_PATH = "storage/";
+    public static String TESTCASE_STORAGE_PATH = "storage/testcase/";
     
     //项目名称
     public static String PROJECT_NAME = "";
