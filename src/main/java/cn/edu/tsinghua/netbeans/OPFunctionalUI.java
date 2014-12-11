@@ -7,6 +7,7 @@ package cn.edu.tsinghua.netbeans;
 
 import cn.edu.tsinghua.testcase.model.OperationObject;
 import cn.edu.tsinghua.testcase.model.UserProfile;
+import cn.edu.tsinghua.util.CheckUtil;
 import cn.edu.tsinghua.util.Constant;
 import cn.edu.tsinghua.util.JFrameUtil;
 import cn.edu.tsinghua.util.OPUtil;
@@ -212,23 +213,10 @@ public class OPFunctionalUI extends javax.swing.JFrame {
             OperationObject fatherOperationObject = (OperationObject) selectedItem;
             String nameString = JOptionPane.showInputDialog(this,"请输入"+profileCNName);
             String possibilityString = JOptionPane.showInputDialog(this,"请输入"+profileCNShortName+"使用概率");
-            
-            Float proFloat = 0f;
-            try{
-                proFloat = Float.parseFloat(possibilityString);
-            }catch(NumberFormatException ex){
-                JOptionPane.showMessageDialog(this, "使用概率必须为字符型数字。");
-                return;
-            }
-
-            //判断用户名概率是否为空
-            //判断概率是否为浮点类型
-            if(nameString.trim().isEmpty() || proFloat <= 0 || proFloat > 1){
-                JOptionPane.showMessageDialog(this, profileCNName+"或者概率不能为空，并且使用概率不能大于1。");             
-            }else{
+            //检查输入的名称和概率是否合法
+            if(CheckUtil.checkNameAndPossibility(profileCNShortName, nameString, possibilityString, rootPane)){
                 JFrameUtil.refreshTheTextArea(jTextArea1, stringMap.get(fatherOperationObject.getName()), nameString, possibilityString);
-
-                OperationObject operationObject = new OperationObject(nameString, proFloat);
+                OperationObject operationObject = new OperationObject(nameString, Float.parseFloat(possibilityString));
                 List<OperationObject> OperationObjectList = functionProfileMap.get(fatherOperationObject);
                 OperationObjectList.add(operationObject);
             }

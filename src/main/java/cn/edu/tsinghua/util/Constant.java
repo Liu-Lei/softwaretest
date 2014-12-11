@@ -28,5 +28,10 @@ public class Constant {
     public final static String PARAMETER_TYPE_FLOAT = "浮点型";
     public final static String PARAMETER_TYPE_STRING = "字符型";
     public final static String PARAMETER_TYPE_ENUM = "枚举型";
+    
+    
+    public static int FRAME_WIDTH = 800;
+    public static int FRAME_HEIGHT = 600;
+    
 
 }

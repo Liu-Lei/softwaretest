@@ -7,6 +7,7 @@ package cn.edu.tsinghua.netbeans;
 
 import cn.edu.tsinghua.testcase.model.OperationObject;
 import cn.edu.tsinghua.testcase.model.UserProfile;
+import cn.edu.tsinghua.util.CheckUtil;
 import cn.edu.tsinghua.util.JFrameUtil;
 import cn.edu.tsinghua.util.OPUtil;
 import java.awt.Dimension;
@@ -26,6 +27,10 @@ import javax.swing.UnsupportedLookAndFeelException;
 public class OPUserUI extends javax.swing.JFrame {
     
     private Map<String, StringBuffer> userStringMap;
+    
+    private String profileCNShortName = "用户";
+    
+    private String profileCNName = "用户名称";
     
     private String projectName;
     
@@ -222,25 +227,11 @@ public class OPUserUI extends javax.swing.JFrame {
         if(selectedObject instanceof OperationObject){
             String userName = JOptionPane.showInputDialog(this,"请输入用户名称（不同客户的同一类别用户需用同一个用户名）");
             String userPro = JOptionPane.showInputDialog(this,"请输入用户使用概率");
-            Float proFloat = 0f;
-            try{
-                proFloat = Float.parseFloat(userPro);
-            }catch(NumberFormatException ex){
-                JOptionPane.showMessageDialog(this, "使用概率必须为字符型数字。");
-                return;
-            }
-
-            //判断用户名概率是否为空
-            //TODO:判断概率是否为浮点类型
-            if(userName.trim().isEmpty() || proFloat <= 0 || proFloat > 1){
-                JOptionPane.showMessageDialog(this, "用户名称或者概率不能为空，并且使用概率不能大于1。");            
-            }else{
+            //检查输入的名称和概率是否合法
+            if(CheckUtil.checkNameAndPossibility(profileCNShortName, userName, userPro, rootPane)){
                 OperationObject customerObject = (OperationObject)selectedObject;
-
                 JFrameUtil.refreshTheTextArea(jTextArea1, userStringMap.get(customerObject.getName()), userName, userPro);
-
-                OperationObject userObject = new OperationObject(userName, proFloat);
-
+                OperationObject userObject = new OperationObject(userName, Float.parseFloat(userPro));
                 List<OperationObject> userObjectList = userProfileMap.get(customerObject);
                 userObjectList.add(userObject);
             }

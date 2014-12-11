@@ -7,6 +7,7 @@ package cn.edu.tsinghua.netbeans;
 
 import cn.edu.tsinghua.testcase.model.OperationObject;
 import cn.edu.tsinghua.testcase.model.UserProfile;
+import cn.edu.tsinghua.util.CheckUtil;
 import cn.edu.tsinghua.util.Constant;
 import cn.edu.tsinghua.util.JFrameUtil;
 import cn.edu.tsinghua.util.OPUtil;
@@ -23,23 +24,21 @@ import javax.swing.UnsupportedLookAndFeelException;
  * @author liulei
  */
 public class OPSystemModeUI extends javax.swing.JFrame {
-    
+
     private String profileCNShortName = "系统模式";
-    
+
     private String profileCNName = "系统模式名称";
-    
+
     private Map<String, StringBuffer> stringMap;
-    
+
     private String projectName;
     //key->father op name, value->sun op list
     private Map<OperationObject, List<OperationObject>> systemModeProfileMap;
-    
+
     private Map<String, Float> userProfileMap;
-    
-    
+
     private OPUserUI previousUI;
     private OPFunctionalUI nextUI;
-   
 
     OPSystemModeUI(String projectName, Map<String, Float> userProfileMap, OPUserUI userUI) {
         super("OPERATIONAL PROFILE");
@@ -51,20 +50,20 @@ public class OPSystemModeUI extends javax.swing.JFrame {
         //设置项目名称
         jLabel3.setText(projectName);
         this.setResizable(false);
-        
+
         stringMap = new HashMap<String, StringBuffer>();
         systemModeProfileMap = new HashMap<OperationObject, List<OperationObject>>();
-        
+
         //初始化下拉框，stringMap和操作剖面Map
-        for(String keyString : userProfileMap.keySet()){
+        for (String keyString : userProfileMap.keySet()) {
             OperationObject operationObject = new OperationObject(keyString, userProfileMap.get(keyString));
             jComboBox1.addItem(operationObject);
             systemModeProfileMap.put(operationObject, new ArrayList<OperationObject>());
             stringMap.put(keyString, new StringBuffer());
         }
-        
+
         //init the customer string buffer map
-        for(String objectName : stringMap.keySet()){
+        for (String objectName : stringMap.keySet()) {
             JFrameUtil.refreshTheTextArea(jTextArea1, stringMap.get(objectName), profileCNName, "概率");
         }
     }
@@ -220,45 +219,33 @@ public class OPSystemModeUI extends javax.swing.JFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         Object selectedItem = jComboBox1.getSelectedItem();
-        if(selectedItem instanceof OperationObject){
+        if (selectedItem instanceof OperationObject) {
             OperationObject fatherOperationObject = (OperationObject) selectedItem;
-            String nameString = JOptionPane.showInputDialog(this,"请输入"+profileCNName);
-            String possibilityString = JOptionPane.showInputDialog(this,"请输入"+profileCNShortName+"使用概率");
-            
-            Float proFloat = 0f;
-            try{
-                proFloat = Float.parseFloat(possibilityString);
-            }catch(NumberFormatException ex){
-                JOptionPane.showMessageDialog(this, "使用概率必须为字符型数字。");
-                return;
-            }
+            String nameString = JOptionPane.showInputDialog(this, "请输入" + profileCNName);
+            String possibilityString = JOptionPane.showInputDialog(this, "请输入" + profileCNShortName + "使用概率");
 
-            //判断用户名概率是否为空
-            //判断概率是否为浮点类型
-            if(nameString.trim().isEmpty() || proFloat <= 0 || proFloat > 1){
-                JOptionPane.showMessageDialog(this, profileCNName+"或者概率不能为空，并且使用概率不能大于1。");             
-            }else{
+            //检查输入的名称和概率是否合法
+            if (CheckUtil.checkNameAndPossibility(profileCNShortName, nameString, possibilityString, rootPane)) {
                 JFrameUtil.refreshTheTextArea(jTextArea1, stringMap.get(fatherOperationObject.getName()), nameString, possibilityString);
-
-                OperationObject operationObject = new OperationObject(nameString, proFloat);
+                OperationObject operationObject = new OperationObject(nameString, Float.parseFloat(possibilityString));
                 List<OperationObject> OperationObjectList = systemModeProfileMap.get(fatherOperationObject);
                 OperationObjectList.add(operationObject);
             }
-        }else{
+        } else {
             JOptionPane.showMessageDialog(this, "请先选择用户操作剖面");
         }
-        
+
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        if(previousUI != null){
+        if (previousUI != null) {
             previousUI.setVisible(true);
             this.dispose();
         }
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        if(nextUI == null){
+        if (nextUI == null) {
             nextUI = new OPFunctionalUI(projectName, OPUtil.getOverallOperationList(systemModeProfileMap), this);
         }
         nextUI.setVisible(true);
@@ -270,15 +257,14 @@ public class OPSystemModeUI extends javax.swing.JFrame {
 
     private void jComboBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox1ItemStateChanged
         String selectedItem = jComboBox1.getSelectedItem().toString();
-        if(!selectedItem.equals(Constant.PLEASE_CHOOSE)){
+        if (!selectedItem.equals(Constant.PLEASE_CHOOSE)) {
             JFrameUtil.refreshTheTextArea(jTextArea1, stringMap.get(selectedItem));
-        }else{
+        } else {
             JFrameUtil.refreshTheTextArea(jTextArea1, new StringBuffer(), "用户名称", "概率");
         }
-        
+
     }//GEN-LAST:event_jComboBox1ItemStateChanged
 
-    
     /**
      * @param args the command line arguments
      */
@@ -305,7 +291,7 @@ public class OPSystemModeUI extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(OPSystemModeUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-         //设置控件格式适应当前系统
+        //设置控件格式适应当前系统
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException e) {
@@ -316,14 +302,14 @@ public class OPSystemModeUI extends javax.swing.JFrame {
             e.printStackTrace();
         } catch (UnsupportedLookAndFeelException e) {
             e.printStackTrace();
-        } 
+        }
         /* Create and display the form */
         final Map<String, Float> opMap = new HashMap<String, Float>();
         opMap.put("User", 0.9f);
         opMap.put("Attendants", 0.062f);
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new OPSystemModeUI("TEST",opMap,null).setVisible(true);
+                new OPSystemModeUI("TEST", opMap, null).setVisible(true);
             }
         });
     }

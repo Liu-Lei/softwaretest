@@ -165,8 +165,8 @@ public class OPCustomerUI extends javax.swing.JFrame {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         String customerName = JOptionPane.showInputDialog(this,"请输入客户名称");
         String customerPro = JOptionPane.showInputDialog(this,"请输入客户使用概率");
-        
-        if(CheckUtil.checkNameAndPossibility(profileCNShortName, customerName, customerPro, rootPane)){
+        //检查输入的名称和概率是否合法
+        if (CheckUtil.checkNameAndPossibility(profileCNShortName, customerName, customerPro, rootPane)) {
             JFrameUtil.refreshTheTextArea(jTextArea1, customerString, customerName, customerPro);
             OperationObject customerObject = new OperationObject(customerName,Float.parseFloat(customerPro));
             customerProfile.add(customerObject);
