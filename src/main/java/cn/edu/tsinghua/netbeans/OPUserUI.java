@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -23,7 +24,7 @@ import javax.swing.UnsupportedLookAndFeelException;
  */
 public class OPUserUI extends javax.swing.JFrame {
     
-    private Map<String, StringBuffer> userStringMap;
+    private Map<OperationObject, DefaultListModel<String>> listModelmap;
     
     private String profileCNShortName = "用户";
     
@@ -55,18 +56,18 @@ public class OPUserUI extends javax.swing.JFrame {
         this.customerProfileList = customerProfileList;
         userProfileMap = new HashMap<OperationObject, List<OperationObject>>();
         
-        //init the customer string buffer map
-        userStringMap = new HashMap<String, StringBuffer>();
+        //init the list Model map
+        listModelmap = new HashMap<OperationObject, DefaultListModel<String>>();
         
         for(OperationObject customerObject : customerProfileList){
             jComboBox1.addItem(customerObject);
             userProfileMap.put(customerObject, new ArrayList<OperationObject>());
-            userStringMap.put(customerObject.getName(), new StringBuffer());
+            listModelmap.put(customerObject, new DefaultListModel<String>());
         }
         
         //init the customer string buffer map
-        for(String customerName : userStringMap.keySet()){
-            JFrameUtil.refreshTheTextArea(jTextArea1, userStringMap.get(customerName), "用户名称", "概率");
+        for(OperationObject operationObject : listModelmap.keySet()){
+            JFrameUtil.addOperationObjectToJList(jList1, operationObject, profileCNName);
         }
         
     }
@@ -221,7 +222,7 @@ public class OPUserUI extends javax.swing.JFrame {
             //检查输入的名称和概率是否合法
             if(CheckUtil.checkNameAndPossibility(profileCNShortName, userName, userPro, rootPane)){
                 OperationObject customerObject = (OperationObject)selectedObject;
-                JFrameUtil.refreshTheTextArea(jTextArea1, userStringMap.get(customerObject.getName()), userName, userPro);
+        //        JFrameUtil.refreshTheTextArea(jTextArea1, userStringMap.get(customerObject.getName()), userName, userPro);
                 OperationObject userObject = new OperationObject(userName, Float.parseFloat(userPro));
                 List<OperationObject> userObjectList = userProfileMap.get(customerObject);
                 userObjectList.add(userObject);
@@ -255,9 +256,9 @@ public class OPUserUI extends javax.swing.JFrame {
         Object selectedObject = jComboBox1.getSelectedItem();
         if(selectedObject instanceof OperationObject){
             OperationObject customerObject = (OperationObject) selectedObject;
-            JFrameUtil.refreshTheTextArea(jTextArea1, userStringMap.get(customerObject.getName()));
+        //    JFrameUtil.refreshTheTextArea(jTextArea1, userStringMap.get(customerObject.getName()));
         }else{
-            JFrameUtil.refreshTheTextArea(jTextArea1, new StringBuffer(), "用户名称", "概率");
+        //    JFrameUtil.refreshTheTextArea(jTextArea1, new StringBuffer(), "用户名称", "概率");
         }
         
     }//GEN-LAST:event_jComboBox1ItemStateChanged

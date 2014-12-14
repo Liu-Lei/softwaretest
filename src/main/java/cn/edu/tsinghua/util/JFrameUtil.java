@@ -83,12 +83,7 @@ public class JFrameUtil {
         
         jList.setModel(listModel);
     }
-    
-    //增加item至jList
-    public static void removeObjectFromJList(JList<String> jList, int index){
-        DefaultListModel<String> listModel = (DefaultListModel<String>) jList.getModel();
-        
-    }
+   
     
     //操作剖面对象的右键菜单
     public static void opRightClick(final JList<String> jList1, final String profileCNShortName, final JRootPane rootPane, java.awt.event.MouseEvent evt, final List<OperationObject> operationObjectList){
