@@ -49,5 +49,28 @@ public class OperationObject implements Serializable{
             return type+Constant.CN_COMMA__STRING+name;
         }
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof OperationObject){
+            OperationObject operationObject = (OperationObject)obj;
+            if(operationObject.getName().equals(getName()) && operationObject.getPossibility().equals(getPossibility())){
+                return true;
+            }
+        }
+        return false;
+        
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 97 * hash + (this.name != null ? this.name.hashCode() : 0);
+        hash = 97 * hash + (this.possibility != null ? this.possibility.hashCode() : 0);
+        hash = 97 * hash + (this.type != null ? this.type.hashCode() : 0);
+        return hash;
+    }
+    
+    
     
 }
