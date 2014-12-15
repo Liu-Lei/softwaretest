@@ -38,4 +38,14 @@ public class OPUtil {
         
         return overallOperationMap;
     }
+    //转换操作剖面Map为操作剖面List
+    public static List<OperationObject> getOperationListByOPMap(Map<String,Float> opMap){
+        List<OperationObject> operationList = new ArrayList<OperationObject>();
+        if(opMap != null && opMap.size() > 0){
+            for(String opName : opMap.keySet()){
+                operationList.add(new OperationObject(opName, opMap.get(opName)));
+            }
+        }
+        return operationList;
+    }
 }

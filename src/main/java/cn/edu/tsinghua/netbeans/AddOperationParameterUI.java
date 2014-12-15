@@ -12,6 +12,8 @@ import cn.edu.tsinghua.testcase.model.UserProfile;
 import cn.edu.tsinghua.util.Constant;
 import cn.edu.tsinghua.util.JFrameUtil;
 import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -53,11 +55,13 @@ public class AddOperationParameterUI extends javax.swing.JFrame {
 
     public AddOperationParameterUI(OperationObject operateObject, OperationalProfileUI mainFrame, DefaultMutableTreeNode operateNode) {
         initComponents();
-        JFrameUtil.setFrameLocationToMiddle(this);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        this.setLocation((int)screenSize.getWidth()/2-200,(int)screenSize.getHeight()/2-200);
         this.operateObject = operateObject;
         this.mainFrame = mainFrame;
         this.opearteParamterMap = mainFrame.opearteParamterMap;
         this.operateNode = operateNode;
+        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         //设置功能名称
         jLabel2.setText(jLabel2.getText()+operateObject.getName());
         

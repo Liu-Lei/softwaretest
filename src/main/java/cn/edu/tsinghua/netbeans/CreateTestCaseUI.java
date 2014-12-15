@@ -71,7 +71,6 @@ public class CreateTestCaseUI extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jButton4 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
-        jButton7 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -104,14 +103,6 @@ public class CreateTestCaseUI extends javax.swing.JFrame {
             }
         });
 
-        jButton7.setFont(new java.awt.Font("宋体", 0, 14)); // NOI18N
-        jButton7.setText("下一步");
-        jButton7.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton7ActionPerformed(evt);
-            }
-        });
-
         jLabel2.setFont(new java.awt.Font("宋体", 1, 12)); // NOI18N
         jLabel2.setText("项目名称：");
 
@@ -139,14 +130,6 @@ public class CreateTestCaseUI extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(88, 88, 88)
-                        .addComponent(jButton6)
-                        .addGap(270, 270, 270)
-                        .addComponent(jButton7))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(184, 184, 184)
-                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(80, 80, 80)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
@@ -159,8 +142,17 @@ public class CreateTestCaseUI extends javax.swing.JFrame {
                                     .addComponent(jTextField2)
                                     .addComponent(jTextField1)))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(159, 159, 159)
-                        .addComponent(jLabel3)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(88, 88, 88)
+                                .addComponent(jButton6))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(184, 184, 184)
+                                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(159, 159, 159)
+                                .addComponent(jLabel3)))
+                        .addGap(0, 149, Short.MAX_VALUE)))
                 .addGap(80, 80, 80))
         );
         jPanel1Layout.setVerticalGroup(
@@ -181,9 +173,7 @@ public class CreateTestCaseUI extends javax.swing.JFrame {
                 .addGap(46, 46, 46)
                 .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(70, 70, 70)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
-                    .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -193,7 +183,6 @@ public class CreateTestCaseUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        JOptionPane.showMessageDialog(rootPane, "TEST");
         String testcaseCountString = jTextField1.getText();
         String storgePath = jTextField2.getText();
         int testcaseCount = 0;
@@ -207,11 +196,13 @@ public class CreateTestCaseUI extends javax.swing.JFrame {
         
         //根据操作以及操作的相应参数生成测试用例XML文件
         if(operateParamterMap != null || operateParamterMap.size() < 1 || operationalProfileMap == null || operationalProfileMap.size() < 1){
+            StringBuilder countInfo = new StringBuilder();
             for(OperationObject functionObject : operationalProfileMap.keySet()){
                 String functionName = functionObject.getName();
                 for(OperationObject operationObject : operationalProfileMap.get(functionObject)){
                     String operationName = operationObject.getName();
                     int operateCount = (int) (operationObject.getPossibility()*testcaseCount);
+                    countInfo.append("操作名称：").append(operationName).append("   ").append("用例数量：").append(operateCount).append("\n");
                     List<OperateParameter> operateParameterList = operateParamterMap.get(operationObject);
                     
                     if(operateCount > 0){
@@ -225,10 +216,9 @@ public class CreateTestCaseUI extends javax.swing.JFrame {
                             }
                         }
                     }
-                    
                 }
-                
             }
+            JOptionPane.showMessageDialog(rootPane, "生成测试用例成功！统计信息如下：\n"+countInfo.toString());
         }else{
             JOptionPane.showMessageDialog(rootPane, "无操作可供生成测试用例，请返回上一步添加操作。");
             return;
@@ -243,14 +233,6 @@ public class CreateTestCaseUI extends javax.swing.JFrame {
             this.dispose();
         }
     }//GEN-LAST:event_jButton6ActionPerformed
-
-    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        if(nextUI == null){
-            
-        }
-        nextUI.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
         // TODO add your handling code here:
@@ -309,7 +291,6 @@ public class CreateTestCaseUI extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

@@ -5,17 +5,11 @@
  */
 package cn.edu.tsinghua.netbeans;
 
-import cn.edu.tsinghua.testcase.model.OperationObject;
-import cn.edu.tsinghua.testcase.model.UserProfile;
-import cn.edu.tsinghua.util.CheckUtil;
-import cn.edu.tsinghua.util.Constant;
+import cn.edu.tsinghua.testcase.model.OperationEnum;
 import cn.edu.tsinghua.util.JFrameUtil;
 import cn.edu.tsinghua.util.OPUtil;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -23,49 +17,13 @@ import javax.swing.UnsupportedLookAndFeelException;
  *
  * @author liulei
  */
-public class OPSystemModeUI extends javax.swing.JFrame {
-
-    private String profileCNShortName = "系统模式";
-
-    private String profileCNName = "系统模式名称";
-
-    private Map<String, StringBuffer> stringMap;
-
-    private String projectName;
-    //key->father op name, value->sun op list
-    private Map<OperationObject, List<OperationObject>> systemModeProfileMap;
-
-    private Map<String, Float> userProfileMap;
-
-    private OPUserUI previousUI;
-    private OPFunctionalUI nextUI;
+public class OPSystemModeUI extends BaseJFrame {
 
     OPSystemModeUI(String projectName, Map<String, Float> userProfileMap, OPUserUI userUI) {
         super("OPERATIONAL PROFILE");
         initComponents();
-        this.previousUI = userUI;
-        JFrameUtil.setFrameLocationToMiddle(this);
-        this.projectName = projectName;
-        this.userProfileMap = userProfileMap;
-        //设置项目名称
-        jLabel3.setText(projectName);
-        this.setResizable(false);
-
-        stringMap = new HashMap<String, StringBuffer>();
-        systemModeProfileMap = new HashMap<OperationObject, List<OperationObject>>();
-
-        //初始化下拉框，stringMap和操作剖面Map
-        for (String keyString : userProfileMap.keySet()) {
-            OperationObject operationObject = new OperationObject(keyString, userProfileMap.get(keyString));
-            jComboBox1.addItem(operationObject);
-            systemModeProfileMap.put(operationObject, new ArrayList<OperationObject>());
-            stringMap.put(keyString, new StringBuffer());
-        }
-
-        //init the customer string buffer map
-        for (String objectName : stringMap.keySet()) {
-            JFrameUtil.refreshTheTextArea(jTextArea1, stringMap.get(objectName), profileCNName, "概率");
-        }
+        JFrameUtil.initTheJFrame(this, projectName, OPUtil.getOperationListByOPMap(userProfileMap), OperationEnum.USER, 
+                 OperationEnum.SYSTEM_MODE, jList1, jComboBox1, previousUI, jLabel3);
     }
 
     /**
@@ -81,14 +39,14 @@ public class OPSystemModeUI extends javax.swing.JFrame {
         jButton4 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jButton6 = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
         jButton7 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox();
         jLabel5 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jList1 = new javax.swing.JList();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(800, 600));
@@ -116,11 +74,6 @@ public class OPSystemModeUI extends javax.swing.JFrame {
                 jButton6ActionPerformed(evt);
             }
         });
-
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jTextArea1.setEnabled(false);
-        jScrollPane1.setViewportView(jTextArea1);
 
         jButton7.setFont(new java.awt.Font("宋体", 0, 14)); // NOI18N
         jButton7.setText("下一步");
@@ -155,6 +108,8 @@ public class OPSystemModeUI extends javax.swing.JFrame {
         jLabel5.setFont(new java.awt.Font("宋体", 0, 14)); // NOI18N
         jLabel5.setText("请添加项目的系统模式类别和概率：");
 
+        jScrollPane2.setViewportView(jList1);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -174,12 +129,9 @@ public class OPSystemModeUI extends javax.swing.JFrame {
                             .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                    .addComponent(jButton6)
-                                    .addGap(270, 270, 270))
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(55, 55, 55)))
+                                .addComponent(jButton6)
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 307, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGap(38, 38, 38)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
@@ -203,9 +155,9 @@ public class OPSystemModeUI extends javax.swing.JFrame {
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(2, 2, 2)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
                     .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -218,23 +170,7 @@ public class OPSystemModeUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        Object selectedItem = jComboBox1.getSelectedItem();
-        if (selectedItem instanceof OperationObject) {
-            OperationObject fatherOperationObject = (OperationObject) selectedItem;
-            String nameString = JOptionPane.showInputDialog(this, "请输入" + profileCNName);
-            String possibilityString = JOptionPane.showInputDialog(this, "请输入" + profileCNShortName + "使用概率");
-
-            //检查输入的名称和概率是否合法
-            if (CheckUtil.checkNameAndPossibility(profileCNShortName, nameString, possibilityString, rootPane)) {
-                JFrameUtil.refreshTheTextArea(jTextArea1, stringMap.get(fatherOperationObject.getName()), nameString, possibilityString);
-                OperationObject operationObject = new OperationObject(nameString, Float.parseFloat(possibilityString));
-                List<OperationObject> OperationObjectList = systemModeProfileMap.get(fatherOperationObject);
-                OperationObjectList.add(operationObject);
-            }
-        } else {
-            JOptionPane.showMessageDialog(this, "请先选择用户操作剖面");
-        }
-
+        JFrameUtil.addNewOperationObject(this, jComboBox1, rootPane, OperationEnum.USER);
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
@@ -245,10 +181,7 @@ public class OPSystemModeUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        if (nextUI == null) {
-            nextUI = new OPFunctionalUI(projectName, OPUtil.getOverallOperationList(systemModeProfileMap), this);
-        }
-        nextUI.setVisible(true);
+        new OPFunctionalUI(projectName, OPUtil.getOverallOperationList(profileMap), this).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton7ActionPerformed
 
@@ -256,15 +189,13 @@ public class OPSystemModeUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void jComboBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox1ItemStateChanged
-        String selectedItem = jComboBox1.getSelectedItem().toString();
-        if (!selectedItem.equals(Constant.PLEASE_CHOOSE)) {
-            JFrameUtil.refreshTheTextArea(jTextArea1, stringMap.get(selectedItem));
-        } else {
-            JFrameUtil.refreshTheTextArea(jTextArea1, new StringBuffer(), "用户名称", "概率");
-        }
-
+        JFrameUtil.jComboBoxItemChanged(this, jList1, jComboBox1);
     }//GEN-LAST:event_jComboBox1ItemStateChanged
 
+    private void jList1MouseReleased(java.awt.event.MouseEvent evt) {                                     
+        JFrameUtil.opRightClick(jList1, profileCNShortName, rootPane, evt, profileMap, jComboBox1.getSelectedItem());
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -324,9 +255,9 @@ public class OPSystemModeUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JList jList1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JScrollPane jScrollPane2;
     // End of variables declaration//GEN-END:variables
 
 }

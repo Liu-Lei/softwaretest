@@ -93,14 +93,6 @@ public class OperationalProfileUI extends javax.swing.JFrame {
         jTree1.setModel(treeModel);
     }
 
-    private abstract class OPMouseListener implements MouseListener {
-
-        public void mouseReleased(MouseEvent e) {
-            jTree1.addMouseListener(this);
-            JOptionPane.showMessageDialog(rootPane, "You clicked the tree");
-        }
-    }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -311,20 +303,27 @@ public class OperationalProfileUI extends javax.swing.JFrame {
                 });
             //操作参数右键
             } else if (grandParentNode != null && grandParentNode.getParent().equals(treeRoot)){
-                //验证过程
-                int varifyFlag = JOptionPane.showConfirmDialog(rootPane, "确定删除此操作参数？", "删除操作参数", JOptionPane.YES_NO_OPTION);
-                if(varifyFlag == 0){
-                    //操作参数
-                    OperateParameter parameter = (OperateParameter) selectedNode.getUserObject();
-                    //操作对象
-                    OperationObject operationObject = (OperationObject)parentNode.getUserObject();
-                    //删除操作对象的参数
-                    opearteParamterMap.get(operationObject).remove(parameter);
-                    
-                    //从JTree上删除操作参数
-                    parentNode.remove(selectedNode);
-                    refreshTree(jTree1, parentNode);
-                }
+                JMenuItem rootNode = new JMenuItem("删除操作参数");
+                popMenu.add(rootNode);
+                rootNode.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        //验证过程
+                    int varifyFlag = JOptionPane.showConfirmDialog(rootPane, "确定删除此操作参数？", "删除操作参数", JOptionPane.YES_NO_OPTION);
+                    if(varifyFlag == 0){
+                        //操作参数
+                        DefaultMutableTreeNode parentNode = (DefaultMutableTreeNode)selectedNode.getParent();
+                        OperateParameter parameter = (OperateParameter) selectedNode.getUserObject();
+                        //操作对象
+                        OperationObject operationObject = (OperationObject)parentNode.getUserObject();
+                        //删除操作对象的参数
+                        opearteParamterMap.get(operationObject).remove(parameter);
+
+                        //从JTree上删除操作参数
+                        parentNode.remove(selectedNode);
+                        refreshTree(jTree1, parentNode);
+                    }
+                    }
+                });
             }
             popMenu.show(evt.getComponent(), evt.getX(), evt.getY()); //弹出菜单的显示位置
         }

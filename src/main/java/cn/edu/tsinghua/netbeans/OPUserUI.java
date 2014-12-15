@@ -5,16 +5,12 @@
  */
 package cn.edu.tsinghua.netbeans;
 
+import cn.edu.tsinghua.testcase.model.OperationEnum;
 import cn.edu.tsinghua.testcase.model.OperationObject;
-import cn.edu.tsinghua.util.CheckUtil;
 import cn.edu.tsinghua.util.JFrameUtil;
 import cn.edu.tsinghua.util.OPUtil;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import javax.swing.DefaultListModel;
-import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -22,54 +18,16 @@ import javax.swing.UnsupportedLookAndFeelException;
  *
  * @author liulei
  */
-public class OPUserUI extends javax.swing.JFrame {
-    
-    private Map<OperationObject, DefaultListModel<String>> listModelmap;
-    
-    private String profileCNShortName = "用户";
-    
-    private String profileCNName = "用户名称";
-    
-    private String projectName;
-    
-    private Map<OperationObject,List<OperationObject>> userProfileMap;
-    private List<OperationObject> customerProfileList;
-    
-    private OPCustomerUI previousUI;
-    private OPSystemModeUI nextUI;
-
+public class OPUserUI extends BaseJFrame {
+   
     /**初始化用户剖面构造
      * Creates new form OPUserUI
      */
     public OPUserUI(String projectName, List<OperationObject> customerProfileList,OPCustomerUI customerUI) {
         super("OPERATIONAL PROFILE");
         initComponents();
-        previousUI = customerUI;
-        //设置界面在屏幕中居中显示
-        JFrameUtil.setFrameLocationToMiddle(this);
-        this.projectName = projectName;
-        //设置项目名称
-        jLabel3.setText(projectName);
-        this.setResizable(false);
-        
-        //设置客户剖面列表和用户剖面列表
-        this.customerProfileList = customerProfileList;
-        userProfileMap = new HashMap<OperationObject, List<OperationObject>>();
-        
-        //init the list Model map
-        listModelmap = new HashMap<OperationObject, DefaultListModel<String>>();
-        
-        for(OperationObject customerObject : customerProfileList){
-            jComboBox1.addItem(customerObject);
-            userProfileMap.put(customerObject, new ArrayList<OperationObject>());
-            listModelmap.put(customerObject, new DefaultListModel<String>());
-        }
-        
-        //init the customer string buffer map
-        for(OperationObject operationObject : listModelmap.keySet()){
-            JFrameUtil.addOperationObjectToJList(jList1, operationObject, profileCNName);
-        }
-        
+        JFrameUtil.initTheJFrame(this, projectName, customerProfileList, OperationEnum.CUSTOMER, 
+                 OperationEnum.USER, jList1, jComboBox1, previousUI, jLabel3);
     }
 
     /**
@@ -153,6 +111,11 @@ public class OPUserUI extends javax.swing.JFrame {
         jLabel5.setFont(new java.awt.Font("宋体", 0, 14)); // NOI18N
         jLabel5.setText("请添加项目的用户类别和概率：");
 
+        jList1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                jList1MouseReleased(evt);
+            }
+        });
         jScrollPane2.setViewportView(jList1);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -215,22 +178,7 @@ public class OPUserUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        Object selectedObject = jComboBox1.getSelectedItem();
-        if(selectedObject instanceof OperationObject){
-            String userName = JOptionPane.showInputDialog(this,"请输入用户名称（不同客户的同一类别用户需用同一个用户名）");
-            String userPro = JOptionPane.showInputDialog(this,"请输入用户使用概率");
-            //检查输入的名称和概率是否合法
-            if(CheckUtil.checkNameAndPossibility(profileCNShortName, userName, userPro, rootPane)){
-                OperationObject customerObject = (OperationObject)selectedObject;
-        //        JFrameUtil.refreshTheTextArea(jTextArea1, userStringMap.get(customerObject.getName()), userName, userPro);
-                OperationObject userObject = new OperationObject(userName, Float.parseFloat(userPro));
-                List<OperationObject> userObjectList = userProfileMap.get(customerObject);
-                userObjectList.add(userObject);
-            }
-        }else{
-            JOptionPane.showMessageDialog(this, "请先选择选择客户操作剖面");
-        }
-        
+        JFrameUtil.addNewOperationObject(this, jComboBox1, rootPane, OperationEnum.CUSTOMER);
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
@@ -242,26 +190,19 @@ public class OPUserUI extends javax.swing.JFrame {
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         this.dispose();
-        Map<String, Float> OPMap = OPUtil.getOverallOperationList(userProfileMap);
-        if(nextUI == null){
-            nextUI = new OPSystemModeUI(projectName, OPMap, this);
-        }
-        nextUI.setVisible(true);
+        new OPSystemModeUI(projectName, OPUtil.getOverallOperationList(profileMap), this).setVisible(true);
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void jComboBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox1ItemStateChanged
-        Object selectedObject = jComboBox1.getSelectedItem();
-        if(selectedObject instanceof OperationObject){
-            OperationObject customerObject = (OperationObject) selectedObject;
-        //    JFrameUtil.refreshTheTextArea(jTextArea1, userStringMap.get(customerObject.getName()));
-        }else{
-        //    JFrameUtil.refreshTheTextArea(jTextArea1, new StringBuffer(), "用户名称", "概率");
-        }
-        
+        JFrameUtil.jComboBoxItemChanged(this, jList1, jComboBox1);
     }//GEN-LAST:event_jComboBox1ItemStateChanged
+
+    private void jList1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jList1MouseReleased
+        JFrameUtil.opRightClick(jList1, profileCNShortName, rootPane, evt, profileMap, jComboBox1.getSelectedItem());
+    }//GEN-LAST:event_jList1MouseReleased
 
     
     /**

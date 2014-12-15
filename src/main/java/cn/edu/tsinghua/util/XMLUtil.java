@@ -77,7 +77,7 @@ public class XMLUtil {
         
         
         //创建操作参数列表节点
-        if(operateParameterList.size() > 0){
+        if(operateParameterList != null && operateParameterList.size() > 0){
             Element parasElement = xmlDocument.createElement("parameters");
             
             for(OperateParameter parameter : operateParameterList){
