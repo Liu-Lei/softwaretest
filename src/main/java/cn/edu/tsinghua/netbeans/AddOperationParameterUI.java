@@ -9,6 +9,7 @@ import cn.edu.tsinghua.testcase.model.OperateParameter;
 import cn.edu.tsinghua.testcase.model.OperationObject;
 import cn.edu.tsinghua.testcase.model.ParameterType;
 import cn.edu.tsinghua.testcase.model.UserProfile;
+import cn.edu.tsinghua.util.CheckUtil;
 import cn.edu.tsinghua.util.Constant;
 import cn.edu.tsinghua.util.JFrameUtil;
 import java.awt.Container;
@@ -43,7 +44,8 @@ public class AddOperationParameterUI extends javax.swing.JFrame {
 
     private String tipsString = "参数值之间用分号分隔，值和概率之间用逗号分隔，\n" +
                                 "例如（枚举型）：2,0.3;10,0.7;\n" +
-                                "例如（整型）：[1-20],0.3;(20-100],0.7; \n" +
+                                "例如（整型）：[1-20],0.3;[20-100],0.7; \n" +
+                                "例如（浮点型）：[0.1-0.5],0.3;[0.7-1.2],0.7; \n" +
                                 "例如（字符型）：beijing,0.3;shanghai,0.7; ";
     
     
@@ -64,6 +66,7 @@ public class AddOperationParameterUI extends javax.swing.JFrame {
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         //设置功能名称
         jLabel2.setText(jLabel2.getText()+operateObject.getName());
+        jTextArea1.setText(tipsString);
         
         this.setResizable(false);
         this.setVisible(true);
@@ -234,22 +237,25 @@ public class AddOperationParameterUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        OperateParameter parameter = new OperateParameter();
-        parameter.setName(jTextField1.getText());
-        parameter.setPossibility(Float.parseFloat(jTextField2.getText()));
-        parameter.setType((ParameterType) jComboBox1.getSelectedItem());
-        parameter.setParaValuePossibility(jTextArea1.getText());
-        if(opearteParamterMap.containsKey(operateObject)){
-            opearteParamterMap.get(operateObject).add(parameter);
-        }else{
-            List<OperateParameter> paraList = new ArrayList<OperateParameter>();
-            paraList.add(parameter);
-            opearteParamterMap.put(operateObject, paraList);
+        if(CheckUtil.checkOperationParameter(jTextField1.getText(), jTextField2.getText(), jComboBox1.getSelectedItem(), 
+                jTextArea1.getText(), rootPane, tipsString)){
+            OperateParameter parameter = new OperateParameter();
+            parameter.setName(jTextField1.getText());
+            parameter.setPossibility(Float.parseFloat(jTextField2.getText()));
+            parameter.setType((ParameterType) jComboBox1.getSelectedItem());
+            parameter.setParaValuePossibility(jTextArea1.getText());
+            if(opearteParamterMap.containsKey(operateObject)){
+                opearteParamterMap.get(operateObject).add(parameter);
+            }else{
+                List<OperateParameter> paraList = new ArrayList<OperateParameter>();
+                paraList.add(parameter);
+                opearteParamterMap.put(operateObject, paraList);
+            }
+            mainFrame.refreshTree(operateNode, parameter);
+            this.dispose();
         }
-        mainFrame.refreshTree(operateNode, parameter);
-        this.dispose();
     }//GEN-LAST:event_jButton7ActionPerformed
-
+    
     private void jTextArea1FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextArea1FocusGained
         if(jTextArea1.getText().equals(tipsString)){
             jTextArea1.setText("");

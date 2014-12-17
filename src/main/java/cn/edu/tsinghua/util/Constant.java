@@ -18,6 +18,7 @@ public class Constant {
     public final static String TAB__STRING = "\t";
     public final static String BLANK__STRING = " ";
     public final static String CN_COMMA__STRING = "：";
+    public final static String COMMA_SYMBOL_STRING = ",";
     
     public final static String PARA_SPLIT_STRING = ";";
     public final static String LEFT_BRACKET = "[";

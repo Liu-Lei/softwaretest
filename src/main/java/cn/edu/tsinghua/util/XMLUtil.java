@@ -135,7 +135,7 @@ public class XMLUtil {
         
         //split参数值以及概率字符串
         for(int i = 0; i < paraVAPArray.length; i++){
-            String[] vapSplitArray = paraVAPArray[i].split(",");
+            String[] vapSplitArray = paraVAPArray[i].split(Constant.COMMA_SYMBOL_STRING);
             paraValueArray[i] = vapSplitArray[0];
             paraPossibilityArray[i] = vapSplitArray[1];
         }
