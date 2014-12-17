@@ -199,9 +199,10 @@ public class CreateTestCaseUI extends javax.swing.JFrame {
             StringBuilder countInfo = new StringBuilder();
             for(OperationObject functionObject : operationalProfileMap.keySet()){
                 String functionName = functionObject.getName();
+                float functionPossibility = functionObject.getPossibility();
                 for(OperationObject operationObject : operationalProfileMap.get(functionObject)){
                     String operationName = operationObject.getName();
-                    int operateCount = (int) (operationObject.getPossibility()*testcaseCount);
+                    int operateCount = (int) (operationObject.getPossibility()*functionPossibility*testcaseCount);
                     countInfo.append("操作名称：").append(operationName).append("   ").append("用例数量：").append(operateCount).append("\n");
                     List<OperateParameter> operateParameterList = operateParamterMap.get(operationObject);
                     
