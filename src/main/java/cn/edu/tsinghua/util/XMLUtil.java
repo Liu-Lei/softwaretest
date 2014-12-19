@@ -166,18 +166,24 @@ public class XMLUtil {
                 if(chooseValue.contains(Constant.EN_DASH_STRING)){
                     int startInt = Integer.parseInt(chooseValue.substring(1,chooseValue.indexOf(Constant.EN_DASH_STRING)));
                     int endInt = Integer.parseInt(chooseValue.substring(chooseValue.indexOf(Constant.EN_DASH_STRING),chooseValue.length()-1));
-                    return ""+(startInt+random.nextInt(endInt-startInt));
-                }else{
-                    return chooseValue;
+                    if(endInt > startInt){
+                        return ""+(startInt+random.nextInt(endInt-startInt));
+                    }else{
+                        return ""+startInt;
+                    }
                 }
+                return chooseValue;
             case FLOAT:
                 if(chooseValue.contains(Constant.EN_DASH_STRING)){
                     float startFloat = Float.parseFloat(chooseValue.substring(1,chooseValue.indexOf(Constant.EN_DASH_STRING)));
                     float endFloat = Float.parseFloat(chooseValue.substring(chooseValue.indexOf(Constant.EN_DASH_STRING),chooseValue.length()-1));
-                    return ""+(startFloat+random.nextFloat()*(endFloat-startFloat));
-                }else{
-                    return chooseValue;
+                    if(endFloat > startFloat){
+                        return ""+(startFloat+random.nextFloat()*(endFloat-startFloat));
+                    }else{
+                        return ""+startFloat;
+                    }
                 }
+                return chooseValue;
             case ENUM:
                 return chooseValue;
             case STRING:
