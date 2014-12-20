@@ -6,17 +6,10 @@
 package cn.edu.tsinghua.netbeans;
 
 import cn.edu.tsinghua.testcase.model.OperationEnum;
-import cn.edu.tsinghua.testcase.model.OperationObject;
-import cn.edu.tsinghua.testcase.model.UserProfile;
-import cn.edu.tsinghua.util.CheckUtil;
-import cn.edu.tsinghua.util.Constant;
 import cn.edu.tsinghua.util.JFrameUtil;
 import cn.edu.tsinghua.util.OPUtil;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -30,7 +23,7 @@ public class OPFunctionalUI extends BaseJFrame {
         super("OPERATIONAL PROFILE");
         initComponents();
         JFrameUtil.initTheJFrame(this, projectName, OPUtil.getOperationListByOPMap(profileMap), OperationEnum.SYSTEM_MODE, 
-                 OperationEnum.FUNCTION, jList1, jComboBox1, previousUI, jLabel3);
+                 OperationEnum.FUNCTION, jList1, jComboBox1, systemModeUI, jLabel3);
     }
 
     /**
@@ -57,7 +50,6 @@ public class OPFunctionalUI extends BaseJFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(800, 600));
-        setUndecorated(true);
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 

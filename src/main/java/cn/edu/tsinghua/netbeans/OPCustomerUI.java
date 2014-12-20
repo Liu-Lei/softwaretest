@@ -8,14 +8,9 @@ package cn.edu.tsinghua.netbeans;
 import cn.edu.tsinghua.testcase.model.OperationObject;
 import cn.edu.tsinghua.util.CheckUtil;
 import cn.edu.tsinghua.util.JFrameUtil;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.DefaultListModel;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.JPopupMenu;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 

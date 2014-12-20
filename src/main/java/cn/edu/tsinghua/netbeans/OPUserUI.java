@@ -27,7 +27,7 @@ public class OPUserUI extends BaseJFrame {
         super("OPERATIONAL PROFILE");
         initComponents();
         JFrameUtil.initTheJFrame(this, projectName, customerProfileList, OperationEnum.CUSTOMER, 
-                 OperationEnum.USER, jList1, jComboBox1, previousUI, jLabel3);
+                 OperationEnum.USER, jList1, jComboBox1, customerUI, jLabel3);
     }
 
     /**

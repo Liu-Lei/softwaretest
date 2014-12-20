@@ -23,7 +23,7 @@ public class OPSystemModeUI extends BaseJFrame {
         super("OPERATIONAL PROFILE");
         initComponents();
         JFrameUtil.initTheJFrame(this, projectName, OPUtil.getOperationListByOPMap(userProfileMap), OperationEnum.USER, 
-                 OperationEnum.SYSTEM_MODE, jList1, jComboBox1, previousUI, jLabel3);
+                 OperationEnum.SYSTEM_MODE, jList1, jComboBox1, userUI, jLabel3);
     }
 
     /**

@@ -41,7 +41,7 @@ public class BaseJFrame extends javax.swing.JFrame{
     //上级JFrame对象
     protected JFrame previousUI;
     //下级JFrame对象
-    protected OPSystemModeUI nextUI;
+    protected JFrame nextUI;
 
     public BaseJFrame() throws HeadlessException {
     }
@@ -114,11 +114,12 @@ public class BaseJFrame extends javax.swing.JFrame{
         this.previousUI = previousUI;
     }
 
-    public OPSystemModeUI getNextUI() {
+    public JFrame getNextUI() {
         return nextUI;
     }
 
-    public void setNextUI(OPSystemModeUI nextUI) {
+    public void setNextUI(JFrame nextUI) {
         this.nextUI = nextUI;
     }
+    
 }

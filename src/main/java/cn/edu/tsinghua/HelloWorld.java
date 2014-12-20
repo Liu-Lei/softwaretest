@@ -16,6 +16,5 @@ public class HelloWorld
         for(String slice : splitArray){
             System.out.println(slice);
         }
-        
     }
 }
