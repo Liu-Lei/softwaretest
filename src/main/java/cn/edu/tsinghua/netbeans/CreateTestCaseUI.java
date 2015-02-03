@@ -53,8 +53,9 @@ public class CreateTestCaseUI extends javax.swing.JFrame {
         //设置项目名称
         jLabel2.setText(jLabel2.getText()+projectName);
         this.setResizable(false);
-        
+        //操作参数Map
         this.operateParamterMap = opearteParamterMap;
+        //操作剖面参数
         this.operationalProfileMap = operationalProfileMap;
         
     }
@@ -202,6 +203,7 @@ public class CreateTestCaseUI extends javax.swing.JFrame {
                 float functionPossibility = functionObject.getPossibility();
                 for(OperationObject operationObject : operationalProfileMap.get(functionObject)){
                     String operationName = operationObject.getName();
+                    Long operationLossWeight = operationObject.getLossWeight();
                     int operateCount = (int) (operationObject.getPossibility()*functionPossibility*testcaseCount);
                     System.out.println("operateCount="+operateCount);
                     countInfo.append("操作名称：").append(operationName).append("   ").append("用例数量：").append(operateCount).append("\n");
@@ -211,7 +213,7 @@ public class CreateTestCaseUI extends javax.swing.JFrame {
                         //根据需要的操作用例的数量生成对应此操作的测试用例文件
                         for(int i = 0; i < operateCount; i++){
                             try {
-                                XMLUtil.generateXMLFileByOperation(storgePath, functionName, operationName, operateParameterList, i);
+                                XMLUtil.generateXMLFileByOperation(storgePath, functionName, operationName, operationLossWeight,operateParameterList, i);
                             } catch (FileNotFoundException ex) {
                                 System.out.println(ex.getMessage());
                                 continue;

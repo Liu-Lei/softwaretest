@@ -49,6 +49,16 @@ public class CheckUtil {
         }
         return false;
     }
+    
+    //判断string是否为整数
+    public static boolean isLong(String str) {
+        try {
+            Long.parseLong(str);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 
     //检查操作参数信息是否符合规则
     public static boolean checkOperationParameter(String paraName, String possibilityString,

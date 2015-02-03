@@ -244,13 +244,20 @@ public class OperationalProfileUI extends javax.swing.JFrame {
                         
                         String nameString = JOptionPane.showInputDialog(rootPane, "请输入" + profileCNName);
                         String possibilityString = JOptionPane.showInputDialog(rootPane, "请输入"+profileCNShortName+"使用概率");
-                        
+                        String lossWeightString = JOptionPane.showInputDialog(rootPane, "请输入"+profileCNShortName+"损失量（整数）");
                         //判断用户名概率是否为空
                         //判断概率是否为浮点类型
                         if(CheckUtil.checkNameAndPossibility(profileCNShortName, nameString, possibilityString, rootPane)){
+                            long lossWeight = 0l;
+                            if(!CheckUtil.isEmptyString(lossWeightString) && CheckUtil.isLong(lossWeightString)){
+                                lossWeight = Long.parseLong(lossWeightString);
+                            }else{
+                                JOptionPane.showMessageDialog(rootPane, "损失量不能为空且必须为整型！");
+                                return;
+                            }
                             //添加操作进功能操作列表Map
                             OperationObject functionOperationObject = (OperationObject) functionNode.getUserObject();
-                            OperationObject operationObject = new OperationObject(nameString, Float.parseFloat(possibilityString),profileCNShortName);
+                            OperationObject operationObject = new OperationObject(nameString, Float.parseFloat(possibilityString),profileCNShortName,lossWeight);
                             operationalProfileMap.get(functionOperationObject).add(operationObject);
 
                             //在功能列表下级添加操作

@@ -58,7 +58,7 @@ public class XMLUtil {
      * @param operationName
      * @param operateParameterList 
      */
-    public static void generateXMLFileByOperation(String storagePath, String functionName, String operationName, List<OperateParameter> operateParameterList, int serialNumber) throws FileNotFoundException{
+    public static void generateXMLFileByOperation(String storagePath, String functionName, String operationName, Long operationLossWeight, List<OperateParameter> operateParameterList, int serialNumber) throws FileNotFoundException{
         if(builder == null){
             initDocumentBuilder();
         }
@@ -74,6 +74,11 @@ public class XMLUtil {
         Element operationElement = xmlDocument.createElement("operation_name");
         operationElement.appendChild(xmlDocument.createTextNode(operationName));
         root.appendChild(operationElement);
+        
+        //创建操作损失量节点
+        Element operationLossWeightElement = xmlDocument.createElement("operation_loss_weight");
+        operationLossWeightElement.appendChild(xmlDocument.createTextNode(operationLossWeight.toString()));
+        root.appendChild(operationLossWeightElement);
         
         
         //创建操作参数列表节点
@@ -195,19 +200,24 @@ public class XMLUtil {
         
     }
     
-    public static void main(String[] args) {
-        String[] paraPossibilityArray = {"0.8","0.1","0.1"};
-        float[] possibilityFloatArray = new float[paraPossibilityArray.length];
-        for(int i = 0; i < paraPossibilityArray.length; i++){
-            float possibility = Float.parseFloat(paraPossibilityArray[i]);
-            if(i > 0){
-                possibilityFloatArray[i] = possibility + possibilityFloatArray[i-1];
-            }else{
-                possibilityFloatArray[i] = possibility;
-            }
-            
-            System.out.println(possibilityFloatArray[i]);
-        }
+    public static void main(String[] args) throws FileNotFoundException {
+        String storagePath = "E:\\TEMP";
+        String functionName = "增加新用户";
+        String operationName = "新用户";
+        generateXMLFileByOperation(storagePath, functionName, operationName, 100l, null, 1);
+        
+//        String[] paraPossibilityArray = {"0.8","0.1","0.1"};
+//        float[] possibilityFloatArray = new float[paraPossibilityArray.length];
+//        for(int i = 0; i < paraPossibilityArray.length; i++){
+//            float possibility = Float.parseFloat(paraPossibilityArray[i]);
+//            if(i > 0){
+//                possibilityFloatArray[i] = possibility + possibilityFloatArray[i-1];
+//            }else{
+//                possibilityFloatArray[i] = possibility;
+//            }
+//            
+//            System.out.println(possibilityFloatArray[i]);
+//        }
     }
     
 }
