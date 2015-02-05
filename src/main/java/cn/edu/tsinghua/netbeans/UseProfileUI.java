@@ -60,6 +60,7 @@ public class UseProfileUI extends javax.swing.JFrame {
         endJTB = new javax.swing.JToggleButton();
         possibilityJTB = new javax.swing.JToggleButton();
         packageJTB = new javax.swing.JToggleButton();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(800, 600));
@@ -67,7 +68,7 @@ public class UseProfileUI extends javax.swing.JFrame {
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 70, 530, 460));
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 60, 600, 500));
 
         operateJTB.setText("操作");
         operateJTB.addActionListener(new java.awt.event.ActionListener() {
@@ -108,6 +109,10 @@ public class UseProfileUI extends javax.swing.JFrame {
             }
         });
         getContentPane().add(packageJTB, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 340, 90, 40));
+
+        jLabel1.setFont(new java.awt.Font("宋体", 1, 18)); // NOI18N
+        jLabel1.setText("请在下面的方框内构造系统的使用剖面：");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 10, 470, 50));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -195,6 +200,7 @@ public class UseProfileUI extends javax.swing.JFrame {
     private javax.swing.ButtonGroup buttonGroup4;
     private javax.swing.ButtonGroup buttonGroup5;
     private javax.swing.JToggleButton endJTB;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JToggleButton operateJTB;
     private javax.swing.JToggleButton orderJTB;
