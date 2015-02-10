@@ -34,9 +34,9 @@ public class DrawPanel extends JFrame {
                 g2.setColor(Color.white);
                 g2.fillRect(0, 0, getWidth(), getHeight());
                 g2.setColor(Color.black);
-                for (Shape s : shapeList) {
-                    g2.draw(s);
-                }
+//                for (Shape s : shapeList) {
+//                    g2.draw(s);
+//                }
                 g2.draw(shape);
             }
         };
