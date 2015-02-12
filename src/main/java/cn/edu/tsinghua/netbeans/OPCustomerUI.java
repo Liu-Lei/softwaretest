@@ -189,9 +189,11 @@ public class OPCustomerUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        nextUI = new OPUserUI(projectName,customerProfile,this);
-        nextUI.setVisible(true);
-        this.dispose();
+        if(CheckUtil.possibilityCountCheck(profileCNShortName, customerProfile, rootPane)){
+            nextUI = new OPUserUI(projectName,customerProfile,this);
+            nextUI.setVisible(true);
+            this.dispose();
+        }
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jList1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jList1MouseReleased

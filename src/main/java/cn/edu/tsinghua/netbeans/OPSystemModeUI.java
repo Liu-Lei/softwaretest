@@ -6,6 +6,7 @@
 package cn.edu.tsinghua.netbeans;
 
 import cn.edu.tsinghua.testcase.model.OperationEnum;
+import cn.edu.tsinghua.util.CheckUtil;
 import cn.edu.tsinghua.util.JFrameUtil;
 import cn.edu.tsinghua.util.OPUtil;
 import java.util.HashMap;
@@ -181,8 +182,11 @@ public class OPSystemModeUI extends BaseJFrame {
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        new OPFunctionalUI(projectName, OPUtil.getOverallOperationList(profileMap), this).setVisible(true);
-        this.dispose();
+        Map<String, Float> sumOPMap = OPUtil.getOverallOperationList(profileMap);
+        if(CheckUtil.possibilityCountCheck(profileCNShortName, sumOPMap, rootPane)){
+            new OPFunctionalUI(projectName, sumOPMap, this).setVisible(true);
+            this.dispose();
+        }
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed

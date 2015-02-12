@@ -5,8 +5,10 @@
  */
 package cn.edu.tsinghua.util;
 
+import cn.edu.tsinghua.testcase.model.OperationObject;
 import cn.edu.tsinghua.testcase.model.ParameterType;
-import java.awt.TrayIcon;
+import java.util.List;
+import java.util.Map;
 import javax.swing.JOptionPane;
 import javax.swing.JRootPane;
 
@@ -116,6 +118,38 @@ public class CheckUtil {
         } else {
             return false;
         }
+        return true;
+    }
+    
+    
+    /**
+     * 检查List<OperationObject>中OperationObject的概率总和是否为1
+     */
+    public static boolean possibilityCountCheck(String profileCNShortName, List<OperationObject> opList, JRootPane rootPane){
+        float sumPossibility = 0.0f;
+        for(OperationObject operationObject : opList){
+            sumPossibility += operationObject.getPossibility();
+        }
+        if(sumPossibility != 1.0f){
+            JOptionPane.showMessageDialog(rootPane, profileCNShortName+"使用概率之和必须为1");
+            return false;
+        }
+        return true;
+    }
+    
+    /**
+     * 检查Map<String,Float>中OperationObject的概率总和是否为1，此方法为重载方法
+     */
+    public static boolean possibilityCountCheck(String profileCNShortName, Map<String,Float> sumOPMap, JRootPane rootPane){
+        //TODO:仍需调试
+//        float sumPossibility = 0.0f;
+//        for(Float possibility : sumOPMap.values()){
+//            sumPossibility += possibility;
+//        }
+//        if(sumPossibility != 1.0f){
+//            JOptionPane.showMessageDialog(rootPane, profileCNShortName+"使用概率之和必须为1");
+//            return false;
+//        }
         return true;
     }
 }

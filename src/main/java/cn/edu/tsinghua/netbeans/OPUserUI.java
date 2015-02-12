@@ -7,10 +7,12 @@ package cn.edu.tsinghua.netbeans;
 
 import cn.edu.tsinghua.testcase.model.OperationEnum;
 import cn.edu.tsinghua.testcase.model.OperationObject;
+import cn.edu.tsinghua.util.CheckUtil;
 import cn.edu.tsinghua.util.JFrameUtil;
 import cn.edu.tsinghua.util.OPUtil;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -189,8 +191,11 @@ public class OPUserUI extends BaseJFrame {
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        this.dispose();
-        new OPSystemModeUI(projectName, OPUtil.getOverallOperationList(profileMap), this).setVisible(true);
+        Map<String, Float> sumOPMap = OPUtil.getOverallOperationList(profileMap);
+        if(CheckUtil.possibilityCountCheck(profileCNShortName, sumOPMap, rootPane)){
+            new OPSystemModeUI(projectName, sumOPMap, this).setVisible(true);
+            this.dispose();
+        }
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
