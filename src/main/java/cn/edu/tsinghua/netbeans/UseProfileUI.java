@@ -5,6 +5,7 @@
  */
 package cn.edu.tsinghua.netbeans;
 
+import cn.edu.tsinghua.netbeans.model.PaintPanel;
 import cn.edu.tsinghua.util.JFrameUtil;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -49,12 +50,7 @@ public class UseProfileUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        buttonGroup1 = new javax.swing.ButtonGroup();
-        buttonGroup2 = new javax.swing.ButtonGroup();
-        buttonGroup3 = new javax.swing.ButtonGroup();
-        buttonGroup4 = new javax.swing.ButtonGroup();
-        buttonGroup5 = new javax.swing.ButtonGroup();
-        jPanel2 = new javax.swing.JPanel();
+        jPanel2 = new PaintPanel();
         operateJTB = new javax.swing.JToggleButton();
         orderJTB = new javax.swing.JToggleButton();
         endJTB = new javax.swing.JToggleButton();
@@ -68,6 +64,22 @@ public class UseProfileUI extends javax.swing.JFrame {
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel2MouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jPanel2MousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                jPanel2MouseReleased(evt);
+            }
+        });
+        jPanel2.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                jPanel2MouseDragged(evt);
+            }
+        });
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 60, 600, 500));
 
         operateJTB.setText("操作");
@@ -76,7 +88,7 @@ public class UseProfileUI extends javax.swing.JFrame {
                 operateJTBActionPerformed(evt);
             }
         });
-        getContentPane().add(operateJTB, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 260, 90, 40));
+        getContentPane().add(operateJTB, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 210, 90, 40));
 
         orderJTB.setText("顺序转移");
         orderJTB.addActionListener(new java.awt.event.ActionListener() {
@@ -84,7 +96,7 @@ public class UseProfileUI extends javax.swing.JFrame {
                 orderJTBActionPerformed(evt);
             }
         });
-        getContentPane().add(orderJTB, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 100, 90, 40));
+        getContentPane().add(orderJTB, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 60, 90, 40));
 
         endJTB.setText("终止");
         endJTB.addActionListener(new java.awt.event.ActionListener() {
@@ -92,7 +104,7 @@ public class UseProfileUI extends javax.swing.JFrame {
                 endJTBActionPerformed(evt);
             }
         });
-        getContentPane().add(endJTB, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 420, 90, 40));
+        getContentPane().add(endJTB, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 380, 90, 40));
 
         possibilityJTB.setText("概率转移");
         possibilityJTB.addActionListener(new java.awt.event.ActionListener() {
@@ -100,7 +112,7 @@ public class UseProfileUI extends javax.swing.JFrame {
                 possibilityJTBActionPerformed(evt);
             }
         });
-        getContentPane().add(possibilityJTB, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 180, 90, 40));
+        getContentPane().add(possibilityJTB, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 130, 90, 40));
 
         packageJTB.setText("包");
         packageJTB.addActionListener(new java.awt.event.ActionListener() {
@@ -108,7 +120,7 @@ public class UseProfileUI extends javax.swing.JFrame {
                 packageJTBActionPerformed(evt);
             }
         });
-        getContentPane().add(packageJTB, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 340, 90, 40));
+        getContentPane().add(packageJTB, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 290, 90, 40));
 
         jLabel1.setFont(new java.awt.Font("宋体", 1, 18)); // NOI18N
         jLabel1.setText("请在下面的方框内构造系统的使用剖面：");
@@ -146,6 +158,22 @@ public class UseProfileUI extends javax.swing.JFrame {
     private void packageJTBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_packageJTBActionPerformed
         toggleButtonAction(evt);
     }//GEN-LAST:event_packageJTBActionPerformed
+
+    private void jPanel2MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MouseReleased
+
+    }//GEN-LAST:event_jPanel2MouseReleased
+
+    private void jPanel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MouseClicked
+        repaint();
+    }//GEN-LAST:event_jPanel2MouseClicked
+
+    private void jPanel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MousePressed
+
+    }//GEN-LAST:event_jPanel2MousePressed
+
+    private void jPanel2MouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MouseDragged
+        
+    }//GEN-LAST:event_jPanel2MouseDragged
 
     /**
      * @param args the command line arguments
@@ -194,11 +222,6 @@ public class UseProfileUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.ButtonGroup buttonGroup2;
-    private javax.swing.ButtonGroup buttonGroup3;
-    private javax.swing.ButtonGroup buttonGroup4;
-    private javax.swing.ButtonGroup buttonGroup5;
     private javax.swing.JToggleButton endJTB;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel2;
