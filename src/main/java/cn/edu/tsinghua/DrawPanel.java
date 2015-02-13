@@ -5,6 +5,7 @@
  */
 package cn.edu.tsinghua;
 
+import cn.edu.tsinghua.util.JFrameUtil;
 import java.awt.geom.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -15,6 +16,7 @@ import java.util.*;
  * 简单的画图程序
  *
  * @author Eastsun
+ * @Edit by LiuLei
  * @version .1
  */
 public class DrawPanel extends JFrame {
@@ -27,16 +29,18 @@ public class DrawPanel extends JFrame {
 
     public DrawPanel() {
         super("DrawPanel");
+        JFrameUtil.setFrameLocationToMiddle(this);
         JPanel panel = new JPanel() {
+            @Override
             public void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 Graphics2D g2 = (Graphics2D) g;
                 g2.setColor(Color.white);
                 g2.fillRect(0, 0, getWidth(), getHeight());
                 g2.setColor(Color.black);
-//                for (Shape s : shapeList) {
-//                    g2.draw(s);
-//                }
+                for (Shape s : shapeList) {
+                    g2.draw(s);
+                }
                 g2.draw(shape);
             }
         };
@@ -66,7 +70,8 @@ public class DrawPanel extends JFrame {
                 repaint();
             }
         });
-        panel.setPreferredSize(new Dimension(320, 240));
+        
+        panel.setPreferredSize(new Dimension(800, 600));
         add(panel, BorderLayout.NORTH);
         shape = new Rectangle();
 

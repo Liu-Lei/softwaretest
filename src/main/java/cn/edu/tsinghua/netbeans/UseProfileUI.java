@@ -7,9 +7,9 @@ package cn.edu.tsinghua.netbeans;
 
 import cn.edu.tsinghua.netbeans.model.PaintPanel;
 import cn.edu.tsinghua.util.JFrameUtil;
-import java.awt.Dimension;
-import java.awt.Toolkit;
-import javax.swing.JOptionPane;
+import java.awt.Shape;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.RectangularShape;
 import javax.swing.JToggleButton;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -20,6 +20,9 @@ import javax.swing.UnsupportedLookAndFeelException;
  */
 public class UseProfileUI extends javax.swing.JFrame {
     JToggleButton[] toggleButtons = null;
+    
+    //自定义画板JPanel
+    PaintPanel paintPanel;
     /**
      * Creates new form NumberAdditionUI
      */
@@ -29,6 +32,7 @@ public class UseProfileUI extends javax.swing.JFrame {
         //设置界面在屏幕中居中显示
         JFrameUtil.setFrameLocationToMiddle(this);
         this.setResizable(false);
+        paintPanel = (PaintPanel) jPanel2;
         toggleButtons = new JToggleButton[]{operateJTB,orderJTB,endJTB,possibilityJTB,packageJTB};
     }
 
@@ -38,6 +42,7 @@ public class UseProfileUI extends javax.swing.JFrame {
         //设置界面在屏幕中居中显示
         JFrameUtil.setFrameLocationToMiddle(this);
         this.setResizable(false);
+        paintPanel = (PaintPanel) jPanel2;
         toggleButtons = new JToggleButton[]{operateJTB,orderJTB,endJTB,possibilityJTB,packageJTB};
         
     }
@@ -137,6 +142,14 @@ public class UseProfileUI extends javax.swing.JFrame {
         }
         JToggleButton thisToggleButton = (JToggleButton) evt.getSource();
         thisToggleButton.setSelected(true);
+        
+        Shape shape = null;
+        if(thisToggleButton == operateJTB){
+            shape = new Ellipse2D.Float();
+        }
+        paintPanel.shape = shape;
+        
+        System.out.println("The shape : "+ shape.toString());
     }
     
     private void operateJTBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_operateJTBActionPerformed
@@ -160,19 +173,22 @@ public class UseProfileUI extends javax.swing.JFrame {
     }//GEN-LAST:event_packageJTBActionPerformed
 
     private void jPanel2MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MouseReleased
-
+        paintPanel.shapeList.add(paintPanel.shape);
+        System.err.println("shape list size is " + paintPanel.shapeList.size());
     }//GEN-LAST:event_jPanel2MouseReleased
 
     private void jPanel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MouseClicked
-        repaint();
+        
     }//GEN-LAST:event_jPanel2MouseClicked
 
     private void jPanel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MousePressed
-
+        paintPanel.start = evt.getPoint();
     }//GEN-LAST:event_jPanel2MousePressed
 
     private void jPanel2MouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MouseDragged
-        
+        paintPanel.end = evt.getPoint(); 
+        ((RectangularShape) paintPanel.shape).setFrameFromDiagonal(paintPanel.start, paintPanel.end);
+        repaint();
     }//GEN-LAST:event_jPanel2MouseDragged
 
     /**
