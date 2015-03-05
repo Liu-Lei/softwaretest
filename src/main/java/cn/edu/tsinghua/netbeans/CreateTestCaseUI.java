@@ -194,7 +194,7 @@ public class CreateTestCaseUI extends javax.swing.JFrame {
             logger.error("The test case count isn't a number!");
             return;
         }
-        
+        int operationIndex = 0;
         //根据操作以及操作的相应参数生成测试用例XML文件
         if(operateParamterMap != null || operateParamterMap.size() < 1 || operationalProfileMap == null || operationalProfileMap.size() < 1){
             StringBuilder countInfo = new StringBuilder();
@@ -241,7 +241,33 @@ public class CreateTestCaseUI extends javax.swing.JFrame {
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField1ActionPerformed
+    
+    //Opeartion for 
+    class OperationCombination implements Comparable<OperationCombination>{
+        private OperationObject operationObject;
+        private OperationObject fatherOperationObject;
 
+        public OperationObject getOperationObject() {
+            return operationObject;
+        }
+
+        public void setOperationObject(OperationObject operationObject) {
+            this.operationObject = operationObject;
+        }
+
+        public OperationObject getFatherOperationObject() {
+            return fatherOperationObject;
+        }
+
+        public void setFatherOperationObject(OperationObject fatherOperationObject) {
+            this.fatherOperationObject = fatherOperationObject;
+        }
+
+        public int compareTo(OperationCombination o) {
+            return this.operationObject.getPriority() - o.getOperationObject().getPriority();
+        }
+        
+    }
     
     /**
      * @param args the command line arguments
@@ -303,5 +329,5 @@ public class CreateTestCaseUI extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
-
 }
+

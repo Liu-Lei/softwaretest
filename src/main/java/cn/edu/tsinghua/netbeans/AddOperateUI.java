@@ -31,6 +31,8 @@ public class AddOperateUI extends javax.swing.JFrame {
     //key->father op name, value->sun op list
     Map<OperationObject, List<OperationObject>> operationalProfileMap;
     
+    private String profileCNShortName = "操作";
+    
     private JTree jTree1;
 
     public AddOperateUI(OperationalProfileUI mainFrame, JTree jTree1) {
@@ -205,7 +207,7 @@ public class AddOperateUI extends javax.swing.JFrame {
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         //判断名称概率是否为空
         //判断概率是否为浮点类型
-        if(CheckUtil.checkNameAndPossibility("操作", jTextField1.getText(), jTextField2.getText(), rootPane)){
+        if(CheckUtil.checkNameAndPossibility(profileCNShortName, jTextField1.getText(), jTextField2.getText(), rootPane)){
             long lossWeight = 0l;
             if(!CheckUtil.isEmptyString(jTextField3.getText()) && CheckUtil.isLong(jTextField3.getText())){
                 lossWeight = Long.parseLong(jTextField3.getText());
@@ -214,7 +216,9 @@ public class AddOperateUI extends javax.swing.JFrame {
                 return;
             }
             //添加操作进功能操作列表Map
-            OperationObject operationObject = new OperationObject(jTextField1.getText(), Float.parseFloat(jTextField2.getText()),"操作",lossWeight);
+            int priority = (Integer)jComboBox1.getSelectedItem();
+            System.out.println("the priority is " + priority);
+            OperationObject operationObject = new OperationObject(jTextField1.getText(), Float.parseFloat(jTextField2.getText()), profileCNShortName, lossWeight, priority);
             operationalProfileMap.get(functionObject).add(operationObject);
 
             //在功能列表下级添加操作
