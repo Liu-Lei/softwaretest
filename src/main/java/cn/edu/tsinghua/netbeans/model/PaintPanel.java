@@ -35,6 +35,7 @@ public class PaintPanel extends JPanel {
         g2.setColor(Color.white);
         g2.fillRect(0, 0, getWidth(), getHeight());
         g2.setColor(Color.black);
+        
         for (Shape s : shapeList) {
             g2.draw(s);
             System.out.println("Draw a shape");
