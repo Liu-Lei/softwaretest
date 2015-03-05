@@ -17,6 +17,9 @@ public class OperationObject implements Serializable{
     
     //操作失败时的损失量
     private long lossWeight;
+    
+    //操作执行的优先级
+    private int priority;
 
     public OperationObject(String name, Float possibility, String type) {
         //默认lossWeight赋值为0
@@ -24,10 +27,16 @@ public class OperationObject implements Serializable{
     }
     
     public OperationObject(String name, Float possibility, String type, long lossWeight) {
+        //默认prioriy的值为1
+        this(name, possibility, type, lossWeight, 1);
+    }
+    
+    public OperationObject(String name, Float possibility, String type, long lossWeight, int priority) {
         this.name = name;
         this.possibility = possibility;
         this.type = type;
         this.lossWeight = lossWeight;
+        this.priority = priority;
     }
 
     public OperationObject(String name, Float possibility) {
@@ -54,6 +63,14 @@ public class OperationObject implements Serializable{
         this.possibility = possibility;
     }
 
+    public int getPriority() {
+        return priority;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
+    }
+    
     @Override
     public String toString() {
         if(type == null){

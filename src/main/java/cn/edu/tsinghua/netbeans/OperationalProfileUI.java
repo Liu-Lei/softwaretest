@@ -48,7 +48,7 @@ public class OperationalProfileUI extends javax.swing.JFrame {
     //key->operate value ->operate parameter
     Map<OperationObject, List<OperateParameter>> opearteParamterMap;
     //key->father op name, value->sun op list
-    private Map<OperationObject, List<OperationObject>> operationalProfileMap;
+    Map<OperationObject, List<OperationObject>> operationalProfileMap;
     
     
     private OPFunctionalUI previousUI;
@@ -239,36 +239,38 @@ public class OperationalProfileUI extends javax.swing.JFrame {
                 MenuRootNode.addActionListener(new ActionListener() {
                     //添加操作
                     public void actionPerformed(ActionEvent e) {
-                        //   OperationObject functionOperationObject = (OperationObject)selectedNode.getUserObject();
-                        DefaultMutableTreeNode functionNode = (DefaultMutableTreeNode) jTree1.getLastSelectedPathComponent();
+//                        //   OperationObject functionOperationObject = (OperationObject)selectedNode.getUserObject();
+//                        DefaultMutableTreeNode functionNode = (DefaultMutableTreeNode) jTree1.getLastSelectedPathComponent();
+//                        OperationObject functionOperationObject = (OperationObject) functionNode.getUserObject();
+//                        
+                        new AddOperateUI(OperationalProfileUI.this, jTree1);
                         
-                        String nameString = JOptionPane.showInputDialog(rootPane, "请输入" + profileCNName);
-                        String possibilityString = JOptionPane.showInputDialog(rootPane, "请输入"+profileCNShortName+"使用概率");
-                        String lossWeightString = JOptionPane.showInputDialog(rootPane, "请输入"+profileCNShortName+"损失量（整数）");
-                        //判断用户名概率是否为空
-                        //判断概率是否为浮点类型
-                        if(CheckUtil.checkNameAndPossibility(profileCNShortName, nameString, possibilityString, rootPane)){
-                            long lossWeight = 0l;
-                            if(!CheckUtil.isEmptyString(lossWeightString) && CheckUtil.isLong(lossWeightString)){
-                                lossWeight = Long.parseLong(lossWeightString);
-                            }else{
-                                JOptionPane.showMessageDialog(rootPane, "损失量不能为空且必须为整型！");
-                                return;
-                            }
-                            //添加操作进功能操作列表Map
-                            OperationObject functionOperationObject = (OperationObject) functionNode.getUserObject();
-                            OperationObject operationObject = new OperationObject(nameString, Float.parseFloat(possibilityString),profileCNShortName,lossWeight);
-                            operationalProfileMap.get(functionOperationObject).add(operationObject);
-
-                            //在功能列表下级添加操作
-                            DefaultMutableTreeNode operationNode = new DefaultMutableTreeNode(operationObject);
-                            functionNode.add(operationNode);
-                            //--------下面代码实现显示新节点（自动展开父节点）------- 
-                            refreshTree(jTree1, operationNode);
-                        }else{
-                            return;
-                        }
-                        
+//                        String nameString = JOptionPane.showInputDialog(rootPane, "请输入" + profileCNName);
+//                        String possibilityString = JOptionPane.showInputDialog(rootPane, "请输入"+profileCNShortName+"使用概率");
+//                        String lossWeightString = JOptionPane.showInputDialog(rootPane, "请输入"+profileCNShortName+"损失量（整数）");
+//                        //判断用户名概率是否为空
+//                        //判断概率是否为浮点类型
+//                        if(CheckUtil.checkNameAndPossibility(profileCNShortName, nameString, possibilityString, rootPane)){
+//                            long lossWeight = 0l;
+//                            if(!CheckUtil.isEmptyString(lossWeightString) && CheckUtil.isLong(lossWeightString)){
+//                                lossWeight = Long.parseLong(lossWeightString);
+//                            }else{
+//                                JOptionPane.showMessageDialog(rootPane, "损失量不能为空且必须为整型！");
+//                                return;
+//                            }
+//                            //添加操作进功能操作列表Map
+//                            
+//                            OperationObject operationObject = new OperationObject(nameString, Float.parseFloat(possibilityString),profileCNShortName,lossWeight);
+//                            operationalProfileMap.get(functionOperationObject).add(operationObject);
+//
+//                            //在功能列表下级添加操作
+//                            DefaultMutableTreeNode operationNode = new DefaultMutableTreeNode(operationObject);
+//                            functionNode.add(operationNode);
+//                            //--------下面代码实现显示新节点（自动展开父节点）------- 
+//                            refreshTree(jTree1, operationNode);
+//                        }else{
+//                            return;
+//                        }
                     }
                 });
             //操作右键菜单
