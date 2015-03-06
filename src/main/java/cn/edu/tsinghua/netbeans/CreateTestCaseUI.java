@@ -12,6 +12,7 @@ import cn.edu.tsinghua.util.JFrameUtil;
 import cn.edu.tsinghua.util.XMLUtil;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -55,7 +56,7 @@ public class CreateTestCaseUI extends javax.swing.JFrame {
         this.setResizable(false);
         //操作参数Map
         this.operateParamterMap = opearteParamterMap;
-        //操作剖面参数
+        //功能剖面->操作剖面Map
         this.operationalProfileMap = operationalProfileMap;
         
     }
@@ -194,34 +195,49 @@ public class CreateTestCaseUI extends javax.swing.JFrame {
             logger.error("The test case count isn't a number!");
             return;
         }
-        int operationIndex = 0;
+        
+        //所有操作列表
+        List<OperationCombination> operationCombinationList = new ArrayList<OperationCombination>();
+        
         //根据操作以及操作的相应参数生成测试用例XML文件
         if(operateParamterMap != null || operateParamterMap.size() < 1 || operationalProfileMap == null || operationalProfileMap.size() < 1){
-            StringBuilder countInfo = new StringBuilder();
+            
+            //构造操作组合列表
             for(OperationObject functionObject : operationalProfileMap.keySet()){
-                String functionName = functionObject.getName();
-                float functionPossibility = functionObject.getPossibility();
                 for(OperationObject operationObject : operationalProfileMap.get(functionObject)){
-                    String operationName = operationObject.getName();
-                    Long operationLossWeight = operationObject.getLossWeight();
-                    int operateCount = (int) (operationObject.getPossibility()*functionPossibility*testcaseCount);
-                    System.out.println("operateCount="+operateCount);
-                    countInfo.append("操作名称：").append(operationName).append("   ").append("用例数量：").append(operateCount).append("\n");
-                    List<OperateParameter> operateParameterList = operateParamterMap.get(operationObject);
-                    
-                    if(operateCount > 0){
-                        //根据需要的操作用例的数量生成对应此操作的测试用例文件
-                        for(int i = 0; i < operateCount; i++){
-                            try {
-                                XMLUtil.generateXMLFileByOperation(storgePath, functionName, operationName, operationLossWeight,operateParameterList, i);
-                            } catch (FileNotFoundException ex) {
-                                System.out.println(ex.getMessage());
-                                continue;
-                            }
+                    operationCombinationList.add(new OperationCombination(functionObject, operationObject));
+                }
+            }
+            //按照操作的优先级进行排序
+            Collections.sort(operationCombinationList);
+            //生成操作的序号
+            int operationIndex = 0;            
+            //生成的操作剖面统计信息 
+            StringBuilder countInfo = new StringBuilder();
+            //根据概率生成操作XML文件
+            for(OperationCombination operationCombination : operationCombinationList){
+                OperationObject fatherOperationObject = operationCombination.getFatherOperationObject();
+                OperationObject operationObject = operationCombination.getOperationObject();
+                String operationName = operationObject.getName();
+                Long operationLossWeight = operationObject.getLossWeight();
+                int operateCount = (int) (operationObject.getPossibility()*fatherOperationObject.getPossibility()*testcaseCount);
+                System.out.println("operateCount="+operateCount);
+                countInfo.append("操作名称：").append(operationName).append("   ").append("用例数量：").append(operateCount).append("\n");
+                List<OperateParameter> operateParameterList = operateParamterMap.get(operationObject);
+
+                if(operateCount > 0){
+                    //根据需要的操作用例的数量生成对应此操作的测试用例文件
+                    for(int i = 0; i < operateCount; i++){
+                        try {
+                            XMLUtil.generateXMLFileByOperation(storgePath, fatherOperationObject.getName(), operationName, operationLossWeight,operateParameterList,++operationIndex, i);
+                        } catch (FileNotFoundException ex) {
+                            System.out.println(ex.getMessage());
+                            continue;
                         }
                     }
                 }
             }
+            
             JOptionPane.showMessageDialog(rootPane, "生成测试用例成功！统计信息如下：\n"+countInfo.toString());
         }else{
             JOptionPane.showMessageDialog(rootPane, "无操作可供生成测试用例，请返回上一步添加操作。");
@@ -247,6 +263,11 @@ public class CreateTestCaseUI extends javax.swing.JFrame {
         private OperationObject operationObject;
         private OperationObject fatherOperationObject;
 
+        public OperationCombination(OperationObject fatherOperationObject, OperationObject operationObject) {
+            this.operationObject = operationObject;
+            this.fatherOperationObject = fatherOperationObject;
+        }
+        
         public OperationObject getOperationObject() {
             return operationObject;
         }

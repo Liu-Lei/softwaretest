@@ -53,12 +53,13 @@ public class XMLUtil {
     
     /**
      * 根据相应参数生成对应的操作用例文件
-     * @param storagePath
-     * @param functionName
-     * @param operationName
-     * @param operateParameterList 
+     * @param storagePath 存储路径
+     * @param functionName 功能剖面名称
+     * @param operationName 操作剖面名称
+     * @param operateParameterList 操作剖面列表
      */
-    public static void generateXMLFileByOperation(String storagePath, String functionName, String operationName, Long operationLossWeight, List<OperateParameter> operateParameterList, int serialNumber) throws FileNotFoundException{
+    public static void generateXMLFileByOperation(String storagePath, String functionName, String operationName, Long operationLossWeight, 
+            List<OperateParameter> operateParameterList, int operationIndex, int serialNumber) throws FileNotFoundException{
         if(builder == null){
             initDocumentBuilder();
         }
@@ -98,8 +99,16 @@ public class XMLUtil {
         }
         
         //生成XML文件
-        String fileName = new StringBuilder(storagePath).append("/").append(functionName).append(Constant.UNDERLINE_STRING).append(operationName).append(Constant.UNDERLINE_STRING).append(serialNumber).append(".xml").toString();
+        //组合生成的XML文件名字
+        String fileName = new StringBuilder(storagePath).append("/").append(operationIndex).append(Constant.UNDERLINE_STRING)
+                .append(functionName).append(Constant.UNDERLINE_STRING).append(operationName).append(Constant.UNDERLINE_STRING).append(serialNumber).append(".xml").toString();
         File file = new File(fileName);
+        
+        //如果路径不存在，则创建路径
+        File path = new File(storagePath);
+        if(!path.exists()){
+            path.mkdirs();
+        }
         if(tf == null){
             tf = TransformerFactory.newInstance();
         }
@@ -204,20 +213,7 @@ public class XMLUtil {
         String storagePath = "E:\\TEMP";
         String functionName = "增加新用户";
         String operationName = "新用户";
-        generateXMLFileByOperation(storagePath, functionName, operationName, 100l, null, 1);
-        
-//        String[] paraPossibilityArray = {"0.8","0.1","0.1"};
-//        float[] possibilityFloatArray = new float[paraPossibilityArray.length];
-//        for(int i = 0; i < paraPossibilityArray.length; i++){
-//            float possibility = Float.parseFloat(paraPossibilityArray[i]);
-//            if(i > 0){
-//                possibilityFloatArray[i] = possibility + possibilityFloatArray[i-1];
-//            }else{
-//                possibilityFloatArray[i] = possibility;
-//            }
-//            
-//            System.out.println(possibilityFloatArray[i]);
-//        }
+        generateXMLFileByOperation(storagePath, functionName, operationName, 100l, null,2, 1);
     }
     
 }

@@ -216,8 +216,7 @@ public class AddOperateUI extends javax.swing.JFrame {
                 return;
             }
             //添加操作进功能操作列表Map
-            int priority = (Integer)jComboBox1.getSelectedItem();
-            System.out.println("the priority is " + priority);
+            int priority = Integer.parseInt(jComboBox1.getSelectedItem().toString());
             OperationObject operationObject = new OperationObject(jTextField1.getText(), Float.parseFloat(jTextField2.getText()), profileCNShortName, lossWeight, priority);
             operationalProfileMap.get(functionObject).add(operationObject);
 
