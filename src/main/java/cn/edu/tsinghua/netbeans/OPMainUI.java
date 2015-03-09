@@ -74,6 +74,7 @@ public class OPMainUI extends javax.swing.JFrame {
         });
         jPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 220, -1, 40));
 
+        projectNameText.setFont(new java.awt.Font("宋体", 0, 14)); // NOI18N
         projectNameText.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 projectNameTextActionPerformed(evt);
