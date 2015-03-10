@@ -50,8 +50,13 @@ public class JFrameUtil {
     
     //设置界面在屏幕中居中显示
     public static void setFrameLocationToMiddle(JFrame frame) {
+        setFrameLocationToMiddle(frame, Constant.FRAME_WIDTH, Constant.FRAME_HEIGHT);
+    }
+    
+    //设置界面在屏幕中居中显示
+    public static void setFrameLocationToMiddle(JFrame frame, int frameWidth, int frameHeight) {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        frame.setLocation((int)screenSize.getWidth()/2-Constant.FRAME_WIDTH/2,(int)screenSize.getHeight()/2-Constant.FRAME_HEIGHT/2);
+        frame.setLocation((int)screenSize.getWidth()/2-frameWidth/2,(int)screenSize.getHeight()/2-frameHeight/2);
     }
     
     //根据宽度平分两个字符的展示空间
