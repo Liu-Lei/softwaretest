@@ -29,6 +29,21 @@ public class JFrameUtil {
     }
     
     /**
+     * 通用初始化JFrame的操作,并把frame位置设置到屏幕的中间
+     */
+    public static void initAndSetToMiddle(JFrame frame){
+        init(frame, Constant.FRAME_WIDTH, Constant.FRAME_HEIGHT);
+        setFrameLocationToMiddle(frame);
+    }
+    /**
+     * 通用初始化JFrame的操作,并把frame位置设置到屏幕的中间
+     */
+    public static void initAndSetToMiddle(JFrame frame,int width, int height){
+        init(frame, width, height);
+        setFrameLocationToMiddle(frame);
+    }
+    
+    /**
      * 刷新 名称+概率TextArea
      * @param name
      * @param possibility 

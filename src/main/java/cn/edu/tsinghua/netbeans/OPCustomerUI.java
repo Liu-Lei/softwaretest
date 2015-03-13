@@ -7,6 +7,7 @@ package cn.edu.tsinghua.netbeans;
 
 import cn.edu.tsinghua.testcase.model.OperationObject;
 import cn.edu.tsinghua.util.CheckUtil;
+import cn.edu.tsinghua.util.Constant;
 import cn.edu.tsinghua.util.JFrameUtil;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +40,8 @@ public class OPCustomerUI extends javax.swing.JFrame {
         super("OPERATIONAL PROFILE");
         initComponents();
         previousUI = mainUI;
-        JFrameUtil.setFrameLocationToMiddle(this);
+        //设置界面在屏幕中居中显示
+        JFrameUtil.initAndSetToMiddle(this);
         this.projectName = projectName;
         jLabel3.setText(projectName);
         this.setResizable(false);

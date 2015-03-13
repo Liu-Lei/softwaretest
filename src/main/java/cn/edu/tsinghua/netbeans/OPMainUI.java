@@ -5,6 +5,7 @@
  */
 package cn.edu.tsinghua.netbeans;
 
+import cn.edu.tsinghua.util.Constant;
 import cn.edu.tsinghua.util.JFrameUtil;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -29,7 +30,7 @@ public class OPMainUI extends javax.swing.JFrame {
         super("OPERATIONAL PROFILE");
         initComponents();
         //设置界面在屏幕中居中显示
-        JFrameUtil.setFrameLocationToMiddle(this);
+        JFrameUtil.initAndSetToMiddle(this);
         this.setResizable(false);
     }
 
@@ -37,7 +38,7 @@ public class OPMainUI extends javax.swing.JFrame {
         super("OPERATIONAL PROFILE");
         initComponents();
         //设置界面在屏幕中居中显示
-        JFrameUtil.setFrameLocationToMiddle(this);
+        JFrameUtil.initAndSetToMiddle(this);
         this.setResizable(false);
         this.projectName = projectName;
         projectNameText.setText(projectName);
