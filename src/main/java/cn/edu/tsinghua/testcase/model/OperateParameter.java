@@ -20,6 +20,17 @@ public class OperateParameter {
     
     private String value;
 
+    public OperateParameter(String name, float possibility, ParameterType type, String paraValuePossibility, String value) {
+        this.name = name;
+        this.possibility = possibility;
+        this.type = type;
+        this.paraValuePossibility = paraValuePossibility;
+        this.value = value;
+    }
+
+    public OperateParameter() {
+    }
+    
     public String getValue() {
         return value;
     }

@@ -11,9 +11,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.logging.Level;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -56,7 +56,7 @@ public class XMLUtil {
      * @param storagePath 存储路径
      * @param functionName 功能剖面名称
      * @param operationName 操作剖面名称
-     * @param operateParameterList 操作剖面列表
+     * @param operateParameterList 操作参数列表
      */
     public static void generateXMLFileByOperation(String storagePath, String functionName, String operationName, Long operationLossWeight, 
             List<OperateParameter> operateParameterList, int operationIndex, int serialNumber) throws FileNotFoundException{
@@ -213,6 +213,9 @@ public class XMLUtil {
         String storagePath = "E:\\TEMP";
         String functionName = "增加新用户";
         String operationName = "新用户";
+        
+        List<OperateParameter> operateParaList = new ArrayList<OperateParameter>();
+        
         generateXMLFileByOperation(storagePath, functionName, operationName, 100l, null,2, 1);
     }
     
